@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{# <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> #}
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="robots" content="noindex,nofollow" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+        <link rel="shortcut icon" href="{{ asset('') }}" />
+
+        {% block stylesheets %}
+            {#<link rel="stylesheet" type="text/css" href="{{ asset('bundles/geniusdesigndesktoppanel/css/reset.css') }}" media="all" />#}
+            <link rel="stylesheet" type="text/css" href="{{ asset('bundles/geniusdesigndesktoppanel/css/styles.css') }}" media="all" />
+        {% endblock %}
+
+        {% block javascripts %}
+            <script type="text/javascript" src="{{ asset('bundles/geniusdesigndesktoppanel/js/jquery/jquery.js') }}"></script>
+        {% endblock %}
+    </head>
+
+    <body>
+        <div class="body">
+            {% if app.user is not empty %}
+                <div id="status-bar-container">
+                    <div id="status-bar">
+                        <div class="item">Zalogowany jako: <span class="name">{{ app.user.firstName }} {{ app.user.lastName }}</span></div>
+                        {#<div class="item"><a href="{{ path('page') }}" target="_blank">Przejdź do serwisu</a></div>#}
+                        <div class="item last"><a href="{{ path('genius_logout') }}" class="logout">Wyloguj się</a></div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="header">GENIUS DESIGN CMS</div>
+            <div class="main">
+                {% if app.user is not empty %}
+                    <div class="menu">Menu: 
+                        <ul>
+                            <li><a href="{{ path('genius_news_list') }}" class="">Aktualności</a></li>
+                            <li><a href="{{ path('genius_content_list') }}" class="">Treści</a></li>
+                        </ul>
+                    </div>
+                {% endif %}
+                <div class="content">
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
