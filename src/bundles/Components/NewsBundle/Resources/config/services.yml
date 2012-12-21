@@ -1,9 +1,0 @@
-parameters:
-    genius_design_news.helper.class: GeniusDesign\Components\NewsBundle\Helper\NewsHelper
-    
-services:
-    meritoo_news.helper:
-        class: %genius_design_news.helper.class%
-        arguments:
-            container: "@service_container"
-        shared: true

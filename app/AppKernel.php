@@ -17,22 +17,10 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
-            
-            // External bundles
-            new Symfony\Bundle\DoctrineFixturesBundle\DoctrineFixturesBundle(),
-            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-            
-            // External extensions
-            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-            // Backend's Bundle
-            new GeniusDesign\Desktop\PanelBundle\GeniusDesignDesktopPanelBundle(),
-            // Backend Components Bundles
-            new GeniusDesign\Components\NewsBundle\GeniusDesignComponentsNewsBundle(),
-            new GeniusDesign\Components\ContentBundle\GeniusDesignComponentsContentBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
-            //$bundles[] = new Acme\DemoBundle\AcmeDemoBundle();
+            $bundles[] = new Acme\DemoBundle\AcmeDemoBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
