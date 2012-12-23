@@ -31,6 +31,13 @@ class AppKernel extends Kernel {
             new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+            
+            // Backend's Bundle
+            new GeniusDesign\BackendBundle\GeniusDesignBackendBundle(),
+            
+            // Components Bundles
+            new GeniusDesign\Components\NewsBundle\GeniusDesignComponentsNewsBundle(),
+            new GeniusDesign\Components\ContentBundle\GeniusDesignComponentsContentBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

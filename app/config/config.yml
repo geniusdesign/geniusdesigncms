@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: services-doctrine_extensions.yml }
 
 framework:
     #esi:             ~
@@ -58,3 +59,13 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+    
+stof_doctrine_extensions:
+    default_locale: pl_PL
+    orm:
+        default:
+            timestampable: true
+            sluggable: true
+            translatable: false
+            tree: false
+            loggable: false

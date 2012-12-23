@@ -9,3 +9,11 @@
 
 FOSJsRoutingBundle:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+    
+GeniusDesignBackendBundle:
+    resource: "@GeniusDesignBackendBundle/Resources/config/routing.yml"
+    prefix:   /admin
+
+#GeniusDesignSiteBundle:
+#    resource: "@SitePresentationBundle/Resources/config/routing.yml"
+#    prefix:   /

@@ -4,40 +4,43 @@ jms_security_extra:
 
 security:
     encoders:
-        Symfony\Component\Security\Core\User\User: plaintext
+        GeniusDesign\BackendBundle\Entity\Admin:
+            algorithm: md5
+            iterations: 1
+            encode_as_base64: false
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
-        in_memory:
-            memory:
-                users:
-                    user:  { password: userpass, roles: [ 'ROLE_USER' ] }
-                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
-
+        main:
+            entity: {class: GeniusDesign\BackendBundle\Entity\Admin, property: email}
     firewalls:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
         login:
-            pattern:  ^/demo/secured/login$
-            security: false
-
+            pattern: ^/admin/logowanie$
+            anonymous: ~
+        
         secured_area:
-            pattern:    ^/demo/secured/
-            form_login:
-                check_path: /demo/secured/login_check
-                login_path: /demo/secured/login
-            logout:
-                path:   /demo/secured/logout
-                target: /demo/
+            #pattern: ^/
+            pattern: ^/admin
             #anonymous: ~
-            #http_basic:
-            #    realm: "Secured Demo Area"
+            form_login:
+                login_path: /admin/logowanie
+                check_path: /admin/zaloguj
+                failure_path: /admin/logowanie
+                username_parameter: loginForm[email]
+                password_parameter: loginForm[password]
+                default_target_path: /admin
+            logout:
+                path: /admin/wyloguj
+                target: /admin
 
     access_control:
-        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
-        #- { path: ^/_internal/secure, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1 }
+        - {path: ^/admin/logowanie, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - {path: ^/admin, roles: ROLE_ADMIN}
+        - {path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY}

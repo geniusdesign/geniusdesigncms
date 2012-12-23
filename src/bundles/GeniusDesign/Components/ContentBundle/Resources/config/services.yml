@@ -1,0 +1,17 @@
+parameters:
+    genius_design_content.helper.class: GeniusDesign\Components\ContentBundle\Helper\ContentHelper
+    genius_design_content.twig.extension.class: GeniusDesign\Components\ContentBundle\Twig\Extension\GeniusDesignContentExtension
+    
+services:
+    meritoo_content.helper:
+        class: %genius_design_content.helper.class%
+        arguments:
+            container: "@service_container"
+        shared: true
+    genius_design_content.twig.extension:
+        class: %genius_design_content.twig.extension.class%
+        arguments:
+            container: "@service_container"
+        shared: true
+        tags:
+            - {name: twig.extension}

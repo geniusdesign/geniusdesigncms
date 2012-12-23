@@ -1,0 +1,45 @@
+{% extends 'GeniusDesignBackendBundle::layout.html.twig' %}
+
+{#% block pageTitle %}
+    Treści
+{% endblock %#}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}    
+
+{% block content %}
+    <table id="content-list" class="centered list">
+        <tr>
+            <th>Lp.</th>
+            <th>Tytuł</th>
+            <th>Operacje</th>
+        </tr>
+            
+        {% if contents is not empty %}
+            {% for index, item in contents %}
+                {% set contentSlug = item.getTitleSlug() %}
+                {% set url = path('genius_content_edit', {'contentSlug': contentSlug, 'language': language}) %}
+
+                {% set title = item.getTitle() %}
+
+                <tr>
+                    <td class="">
+                        <a href="{{ url }}">{{ index + 1 }}{#{ index + 1 + offset }#}</a>
+                    </td>
+                    <td class="" title="{{ title }}">
+                        <a href="{{ url }}">{{ title }}</a>
+                    </td>
+                    <td class="">
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td class="" colspan="5">
+                    Brak aktualności
+                </td>
+            </tr>
+        {% endif %}
+    </table>
+{% endblock %}
