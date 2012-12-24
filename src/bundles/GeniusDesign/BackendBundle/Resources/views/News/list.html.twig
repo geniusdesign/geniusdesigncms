@@ -22,8 +22,8 @@
             
         {% if news is not empty %}
             {% for index, item in news %}
-                {% set newsId = item.getId() %}
-                {% set url = path('genius_news_edit', {'newsId': newsId, 'language': language}) %}
+                {% set newsSlug = item.getTitleSlug() %}
+                {% set url = path('genius_news_edit', {'newsSlug': newsSlug, 'language': language}) %}
         
                 {% set fileName = item.getImageFileName() %}
                 {% set title = item.getTitle() %}

@@ -10,8 +10,11 @@ genius_logout:
     
     
 genius_news_edit:
-    pattern: /aktualnosci/edycja/{newsId}/{language}
+    pattern: /aktualnosci/edycja/{newsSlug}/{language}
     defaults: {_controller: GeniusDesignBackendBundle:News:edit, language: ''}
+    requirements:
+        contentSlug: "[\w-]+"
+        language: "[\w-]+"
     
 genius_news_list:
     pattern: /aktualnosci/{language}

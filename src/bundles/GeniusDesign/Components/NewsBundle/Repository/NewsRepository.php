@@ -32,4 +32,21 @@ class NewsRepository extends EntityRepository {
         
         return $this->findBy($criteria, $orderBy, $limit, $offset);
     }
+    
+    /**
+     * Returns news by given title slug
+     * 
+     * @param string $newsSlug The news slug
+     * @param [string $language = ''] The language title short
+     * @return array
+     */
+    public function getNewsBySlug($newsSlug, $language = '') {
+        $criteria = array(
+            'title_slug' => $newsSlug,
+            'language' => $language,
+            'deleted_at' => null
+        );
+
+        return $this->findOneBy($criteria);
+    }
 }

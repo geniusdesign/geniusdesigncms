@@ -1,5 +1,19 @@
 {% extends 'GeniusDesignBackendBundle::layout.html.twig' %}
 
 {% block content %}
-   Edycja
+    <form method="post" action="{{ path('genius_news_edit', {'newsSlug': news.getTitleSlug(), 'language': language}) }}">
+        {{ form_widget(form) }}
+        
+        <div class="form-navigation">
+            <div class="submit-button"> {# contentsubmitButton #}
+                <input type="submit" id="go" name="go" value="Zapisz" />
+            </div>
+
+            <div class="link last">
+                <a href="{{ path('genius_news_list') }}">Pokaż inne &raquo;</a>
+            </div>
+        </div>
+    </form>
+    
+    {#{ tinymce_init() }#}
 {% endblock %}
