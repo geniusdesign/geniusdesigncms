@@ -14,6 +14,6 @@ GeniusDesignBackendBundle:
     resource: "@GeniusDesignBackendBundle/Resources/config/routing.yml"
     prefix:   /admin
 
-#GeniusDesignSiteBundle:
-#    resource: "@SitePresentationBundle/Resources/config/routing.yml"
-#    prefix:   /
+GeniusDesignFrontendBundle:
+    resource: "@GeniusDesignFrontendBundle/Resources/config/routing.yml"
+    prefix:   /

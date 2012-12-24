@@ -1,0 +1,4 @@
+genius_frontend_main:
+    pattern: /
+    defaults: {_controller: GeniusDesignFrontendBundle:Default:index, name: ''}
+
