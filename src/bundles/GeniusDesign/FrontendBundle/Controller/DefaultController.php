@@ -2,10 +2,9 @@
 
 namespace GeniusDesign\FrontendBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use GeniusDesign\CommonBundle\Controller\MainController;
 
-class DefaultController extends Controller
-{
+class DefaultController extends MainController {
     public function indexAction($name)
     {
         return $this->render('GeniusDesignFrontendBundle:Default:index.html.twig', array('name' => $name));

@@ -2,7 +2,7 @@
 
 namespace GeniusDesign\BackendBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use GeniusDesign\CommonBundle\Controller\MainController;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
@@ -14,7 +14,7 @@ use GeniusDesign\Components\NewsBundle\Form\NewsType;
  * @author Paweł Cichoń <cichonpawelhd@gmail.com>
  * @copyright GeniusDesign
  */
-class NewsController extends Controller {
+class NewsController extends MainController {
 
     /**
      * Display news list
@@ -60,7 +60,7 @@ class NewsController extends Controller {
         $news = $repository->getNewsBySlug($newsSlug, $language);
 
         if ($news === null) {
-            return $this->redirect($this->generateUrl('genius_news_list'));
+            return $this->redirectTo();
         }
 
         $form = $this->createForm(new NewsType(), $news);
@@ -73,7 +73,7 @@ class NewsController extends Controller {
                 $entityManager->persist($news);
                 $entityManager->flush();
 
-                return $this->redirect($this->generateUrl('genius_news_list'));
+                return $this->redirectTo();
             }
         }
         
@@ -88,4 +88,19 @@ class NewsController extends Controller {
         return $this->render('GeniusDesignBackendBundle:News:edit.html.twig', $parameters);
     }
 
+    /**
+     * Redirects to the route
+     * 
+     * @param [string $route = ''] The name of the route
+     * @param [array $parameters = array()] An array of parameters
+     * @return Reponse
+     */
+    public function redirectTo($route = '', $parameters = array()) {
+        if (empty($route)) {
+            $route = 'genius_news_list';
+        }
+
+        return parent::redirectTo($route, $parameters);
+    }
+    
 }

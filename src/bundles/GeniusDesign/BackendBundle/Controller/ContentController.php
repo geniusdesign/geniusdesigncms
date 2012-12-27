@@ -2,7 +2,7 @@
 
 namespace GeniusDesign\BackendBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use GeniusDesign\CommonBundle\Controller\MainController;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
@@ -14,7 +14,7 @@ use GeniusDesign\Components\ContentBundle\Form\ContentType;
  * @author Paweł Cichoń <cichonpawelhd@gmail.com>
  * @copyright GeniusDesign
  */
-class ContentController extends Controller {
+class ContentController extends MainController {
 
     /**
      * Display content list
@@ -53,7 +53,7 @@ class ContentController extends Controller {
         $content = $repository->getContentBySlug($contentSlug, $language);
 
         if ($content === null) {
-            return $this->redirect($this->generateUrl('genius_content_list'));
+            return $this->redirectTo();
         }
 
         $form = $this->createForm(new ContentType(), $content);
@@ -66,7 +66,7 @@ class ContentController extends Controller {
                 $entityManager->persist($content);
                 $entityManager->flush();
 
-                return $this->redirect($this->generateUrl('genius_content_list'));
+                return $this->redirectTo();
             }
         }
         
@@ -80,4 +80,20 @@ class ContentController extends Controller {
         );
         return $this->render('GeniusDesignBackendBundle:Content:edit.html.twig', $parameters);
     }
+
+    /**
+     * Redirects to the route
+     * 
+     * @param [string $route = ''] The name of the route
+     * @param [array $parameters = array()] An array of parameters
+     * @return Reponse
+     */
+    public function redirectTo($route = '', $parameters = array()) {
+        if (empty($route)) {
+            $route = 'genius_content_list';
+        }
+
+        return parent::redirectTo($route, $parameters);
+    }
+    
 }

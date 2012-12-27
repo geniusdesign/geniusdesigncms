@@ -2,7 +2,7 @@
 
 namespace GeniusDesign\BackendBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use GeniusDesign\CommonBundle\Controller\MainController;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
@@ -14,7 +14,7 @@ use GeniusDesign\BackendBundle\Form\LoginType;
  * @author Paweł Cichoń <cichonpawelhd@gmail.com>
  * @copyright GeniusDesign
  */
-class SecurityController extends Controller {
+class SecurityController extends MainController {
 
     /**
      * Used for authentication

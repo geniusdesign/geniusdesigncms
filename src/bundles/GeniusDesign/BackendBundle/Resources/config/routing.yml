@@ -33,14 +33,12 @@ genius_content_list:
     defaults: {_controller: GeniusDesignBackendBundle:Content:list, language: ''}
     requirements:
         language: "[\w-]+"
-    
-    
-genius_test:
-    pattern: /test
-    defaults: {_controller: GeniusDesignBackendBundle:Default:index}
-    
+
+
 genius_homepage:
-    pattern: /
-    defaults: {_controller: GeniusDesignBackendBundle:Default:index}
+    pattern: /{language}
+    defaults: {_controller: GeniusDesignBackendBundle:Content:list, language: ''}
+    requirements:
+        language: "[\w-]+"
 
 
