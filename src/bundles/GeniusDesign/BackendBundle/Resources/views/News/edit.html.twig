@@ -1,7 +1,7 @@
 {% extends 'GeniusDesignBackendBundle::layout.html.twig' %}
 
 {% block content %}
-    <form method="post" action="{{ path('genius_news_edit', {'newsSlug': news.getTitleSlug(), 'language': language}) }}">
+    <form method="post" action="{{ path('genius_news_edit', {'newsSlug': news.getTitleSlug(), 'language': language}) }}" {{ form_enctype(form) }}>
         {{ form_widget(form) }}
         
         <div class="form-navigation">

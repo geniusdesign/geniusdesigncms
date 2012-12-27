@@ -60,7 +60,7 @@ class NewsType extends AbstractType {
         $builder->add('title', null, array_merge($fieldOptions, array('label' => 'Tytuł:')));
 
         if ($this->imageVisible) {
-            $builder->add('image_file_name', null, array_merge($fieldOptions, array('label' => 'Zdjęcie:', 'required' => false)));
+            $builder->add('image', null, array_merge($fieldOptions, array('label' => 'Zdjęcie:', 'required' => false)));
         }
 
         if ($this->dateVisible) {

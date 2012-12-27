@@ -96,6 +96,12 @@ class News {
     private $deleted_at;
 
     /**
+     * @Assert\File(maxSize="6000000")
+     * @var \Symfony\Component\HttpFoundation\File\UploadedFile
+     */
+    private $image;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -293,7 +299,7 @@ class News {
         $this->language = $language;
         return $this;
     }
-    
+
     /**
      * Get localization code
      * @return string 
@@ -301,4 +307,117 @@ class News {
     public function getLanguage() {
         return $this->language;
     }
+
+    /**
+     * Returns the file object
+     * @return \Symfony\Component\HttpFoundation\File\UploadedFile
+     */
+    public function getImage() {
+        return $this->image;
+    }
+
+    /**
+     * Sets the uploaded image object
+     * 
+     * @param \Symfony\Component\HttpFoundation\File\UploadedFile $image The uploaded image
+     * @return \Meritoo\Component\NewsBundle\Entity\News
+     */
+    public function setImage($image) {
+        $this->image = $image;
+        return $this;
+    }
+
+    /**
+     * Returns helper for uploading
+     * @return \Meritoo\Component\CommonBundle\Helper\UploadHelper
+     */
+    public function getUploadHelper() {
+        return $this->uploadHelper;
+    }
+
+    /**
+     * Sets the helper
+     * 
+     * @param \Meritoo\Component\CommonBundle\Helper\UploadHelper $uploadHelper The helper service / object
+     * @return \Meritoo\Component\NewsBundle\Entity\News
+     */
+    public function setUploadHelper(\Meritoo\Component\CommonBundle\Helper\UploadHelper $uploadHelper) {
+        $this->uploadHelper = $uploadHelper;
+        return $this;
+    }
+
+    /**
+     * Handles the preUpdate event which occurs before the database update operations to entity data
+     * @return void
+     * 
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function onPreUpload() {
+        $image = $this->getImage();
+
+        if ($image !== null) {
+            $entityClassName = __CLASS__;
+            $dimensionsOk = $this->getUploadHelper()->checkImageDimensions($entityClassName, $image, 'image');
+
+            if ($dimensionsOk) {
+                /*
+                 * Removing old image / file
+                 */
+                /* Temporarily disabled
+                $fileName = $this->getImageFileName();
+
+                if (!empty($fileName)) {
+                    $removed = $this->getUploadHelper()->removeFile($entityClassName, $fileName, true, false);
+
+                    if ($removed) {
+                        $this->setImageFileName(null);
+                    }
+                }
+                */
+                
+                /*
+                 * Setting proper name for the new image / file
+                 */
+                $this->setProperFileName();
+            }
+        }
+    }
+
+    /**
+     * Handles the postUpdate event which occurs before the database update operations to entity data
+     * @return void
+     * 
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
+    public function onPostUpdate() {
+        $image = $this->getImage();
+
+        if ($image !== null) {
+            $entityClassName = __CLASS__;
+            $uploadedFile = $image;
+            $fileName = $this->getImageFileName();
+            $itsImage = true;
+
+            $this->getUploadHelper()->upload($entityClassName, $uploadedFile, $fileName, $itsImage);
+        }
+    }
+
+    /**
+     * Sets proper name of file / image
+     * @return void
+     */
+    private function setProperFileName() {
+        $name = $this->getImageFileName();
+
+        if (empty($name)) {
+            $originalFileName = $this->getImage()->getClientOriginalName();
+            $helper = $this->getUploadHelper();
+
+            $name = $helper->getUniqueFileName($originalFileName, $this->getId());
+            $this->setImageFileName($name);
+        }
+    }
+
 }
