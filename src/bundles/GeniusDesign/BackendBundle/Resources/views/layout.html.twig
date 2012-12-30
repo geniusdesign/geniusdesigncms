@@ -10,12 +10,20 @@
         <link rel="shortcut icon" href="{{ asset('') }}" />
 
         {% block stylesheets %}
-            {#<link rel="stylesheet" type="text/css" href="{{ asset('bundles/geniusdesignbackend/css/reset.css') }}" media="all" />#}
+            {#<link rel="stylesheet" type="text/css" href="{{ asset('bundles/geniusdesigncommon/css/reset.css') }}" media="all" />#}
             <link rel="stylesheet" type="text/css" href="{{ asset('bundles/geniusdesignbackend/css/styles.css') }}" media="all" />
+            <link rel="stylesheet" type="text/css" href="{{ asset('bundles/geniusdesigncommon/css/jquery-ui/ui-lightness/jquery-ui-1.9.2.custom.min.css') }}" media="all" />
         {% endblock %}
 
         {% block javascripts %}
-            <script type="text/javascript" src="{{ asset('bundles/geniusdesignbackend/js/jquery/jquery.js') }}"></script>
+            <script type="text/javascript">
+                var datapickerformat = '{{ datapickerFormat() }}';
+            </script>
+            
+            <script type="text/javascript" src="{{ asset('bundles/geniusdesigncommon/js/jquery/jquery.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/geniusdesigncommon/js/jquery-ui/jquery-ui-1.9.2.custom.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/geniusdesigncommon/js/jquery/easyconfirm.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('bundles/geniusdesigncommon/js/common.js') }}"></script>
         {% endblock %}
     </head>
 
@@ -42,6 +50,7 @@
                     </div>
                 {% endif %}
                 <div class="content">
+
                     {% block content %}{% endblock %}
                 </div>
             </div>

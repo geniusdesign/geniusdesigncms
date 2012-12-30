@@ -70,7 +70,7 @@ class NewsType extends AbstractType {
             $builder->add('image', null, array_merge($fieldOptions, array('label' => 'Zdjęcie:', 'required' => false)));
         }
 
-        $builder->add('entrance', null, array_merge($fieldOptions, array('label' => 'Wstęp:', 'attr' => array('class' => 'tinymce'), 'required' => false)));
+        $builder->add('entrance', null, array_merge($fieldOptions, array('label' => 'Wstęp:', 'attr' => array('class' => 'tinymce'), 'required' => true)));
         $builder->add('content', null, array_merge($fieldOptions, array('label' => 'Treść:', 'attr' => array('class' => 'tinymce'), 'required' => false)));
 
         if ($this->autorVisible) {

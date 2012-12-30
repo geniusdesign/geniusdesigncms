@@ -72,7 +72,7 @@ class NewsData implements FixtureInterface, OrderedFixtureInterface, ContainerAw
                         ->setImageFileName(null)
                         ->setAutor($autor)
                         ->setDisplayedDate($displayedDate)
-                        ->setNotPublished()
+                        ->setPublished(true)
                         ->setLanguage($language);
 
                 $manager->persist($news);

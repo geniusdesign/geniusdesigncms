@@ -9,16 +9,38 @@ genius_logout:
     pattern: /wyloguj
     
     
+    
 genius_news_edit:
     pattern: /aktualnosci/edycja/{newsSlug}/{language}
     defaults: {_controller: GeniusDesignBackendBundle:News:edit, language: ''}
     requirements:
         contentSlug: "[\w-]+"
         language: "[\w-]+"
+        
+genius_news_add:
+    pattern: /aktualnosci/dodaj/{language}
+    defaults: {_controller: GeniusDesignBackendBundle:News:add, language: ''}
+    requirements:
+        language: "[\w-]+"
+
+genius_news_delete:
+    pattern: /aktualnosci/usun/{newsSlug}/{language}
+    defaults: {_controller: GeniusDesignBackendBundle:News:delete, language: ''}
+    requirements:
+        newsSlug: "[\w-]+"
+        language: "[\w-]+"
+        
+genius_news_toggle_published:
+    pattern: /aktualnosci/przelacz/{newsSlug}/{language}
+    defaults: {_controller: GeniusDesignBackendBundle:News:togglePublished, language: ''}
+    requirements:
+        newsSlug: "[\w-]+"
+        language: "[\w-]+"
     
 genius_news_list:
     pattern: /aktualnosci/{language}
     defaults: {_controller: GeniusDesignBackendBundle:News:list, language: ''}
+
 
 
 genius_content_edit:

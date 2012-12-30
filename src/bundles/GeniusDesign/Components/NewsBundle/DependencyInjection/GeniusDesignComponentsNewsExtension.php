@@ -66,14 +66,14 @@ class GeniusDesignComponentsNewsExtension extends Extension {
         if (isset($config['showImage'])) {
             $container->setParameter('genius_design_components_news.show_image', $config['showImage']);
         }
-        
+
         /*
          * Returns information whether to show the autor
          */
         if (isset($config['showAutor'])) {
             $container->setParameter('genius_design_components_news.show_autor', $config['showAutor']);
         }
-        
+
         /*
          * Returns information whether to show the date
          */

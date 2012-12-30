@@ -7,6 +7,7 @@ use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use GeniusDesign\Components\NewsBundle\Form\NewsType;
+use GeniusDesign\Components\NewsBundle\Entity\News;
 
 /**
  * News mangament
@@ -17,48 +18,74 @@ use GeniusDesign\Components\NewsBundle\Form\NewsType;
 class NewsController extends MainController {
 
     /**
-     * Display news list
+     * Displays news list
      * @return Response
      */
     public function listAction() {
-        /*
-         * Retrieving the language code
-         */
         $language = 'pl'; //$this->getLanguageCode();
+        $newsHelper = $this->get('genius_design_news.helper');
 
-        /*
-         * The repository
-         */
         $repository = $this->getDoctrine()
                 ->getEntityManager()
                 ->getRepository('GeniusDesignComponentsNewsBundle:News');
 
         $news = $repository->getNews($language);
 
-        /*
-         * Displaying the template
-         */
         $parameters = array(
             'news' => $news,
             'language' => $language,
-            'dateFormat' => 'd.m.Y'
+            'dateFormat' => 'd.m.Y',
+            'isImageVisible' => $newsHelper->isImageEnabled(),
+            'isDateVisible' => $newsHelper->isDateEnabled(),
+            'language' => $language
         );
 
         return $this->render('GeniusDesignBackendBundle:News:list.html.twig', $parameters);
     }
 
     /**
-     * Display news list
+     * Displays one news
      * @return Response
      */
     public function editAction($newsSlug) {
         $language = 'pl'; //$this->getLanguageCode();
+        return $this->commonForAddAndEdit($newsSlug, $language);
+    }
+
+    /**
+     * Adds news
+     * @return Response
+     */
+    public function addAction() {
+        $language = 'pl'; //$this->getLanguageCode();
+        $newsSlug = 0;
+        return $this->commonForAddAndEdit($newsSlug, $language);
+    }
+
+    /**
+     * 
+     * @param int $newsSlug
+     * @param type $language
+     * @return type 
+     */
+    private function commonForAddAndEdit($newsSlug, $language) {
         $request = $this->getRequest();
         $entityManager = $this->getDoctrine()->getEntityManager();
         $newsHelper = $this->get('genius_design_news.helper');
+        $news = null;
+        $isAddsNews = false;
 
-        $repository = $entityManager->getRepository('GeniusDesignComponentsNewsBundle:News');
-        $news = $repository->getNewsBySlug($newsSlug, $language);
+        if (empty($newsSlug)) {
+            $newsSlug = 0;
+        }
+
+        if ($newsSlug === 0) {
+            $news = new News();
+            $isAddsNews = true;
+        } else {
+            $repository = $entityManager->getRepository('GeniusDesignComponentsNewsBundle:News');
+            $news = $repository->getNewsBySlug($newsSlug, $language);
+        }
 
         if ($news === null) {
             return $this->redirectTo();
@@ -68,15 +95,21 @@ class NewsController extends MainController {
         $imageVisible = $newsHelper->isImageEnabled();
         $autorVisible = $newsHelper->isAutorEnabled();
         $formatDate = 'dd.MM.yyyy';
-        
+        $date = $news->getDisplayedDate();
+
+        if (empty($date)) {
+            $news->setDisplayedDate(new \DateTime());
+        }
+
         $form = $this->createForm(new NewsType($autorVisible, $dateVisible, $imageVisible, $formatDate), $news);
-        
+
         if (strtolower($request->getMethod()) == 'post') {
             $form->bindRequest($request);
 
             if ($form->isValid()) {
                 $uploadHelper = $this->get('genius_design_upload.helper');
-                $news->setUploadHelper($uploadHelper);
+                $news->setUploadHelper($uploadHelper)
+                        ->setLanguage($language);
 
                 $entityManager->persist($news);
                 $entityManager->flush();
@@ -84,7 +117,7 @@ class NewsController extends MainController {
                 return $this->redirectTo();
             }
         }
-        
+
         /*
          * Displaying the template
          */
@@ -92,9 +125,64 @@ class NewsController extends MainController {
             'form' => $form->createView(),
             'news' => $news,
             'language' => $language,
-            'isImageVisible' => $imageVisible
+            'isImageVisible' => $imageVisible,
+            'isAddsNews' => $isAddsNews
         );
-        return $this->render('GeniusDesignBackendBundle:News:edit.html.twig', $parameters);
+        return $this->render('GeniusDesignBackendBundle:News:add-and-edit.html.twig', $parameters);
+    }
+
+    /**
+     * Deletes news by given slug
+     * @return Response
+     */
+    public function deleteAction($newsSlug) {
+        $language = 'pl'; //$this->getLanguageCode();
+
+        if (!empty($newsSlug)) {
+            $repository = $this->getDoctrine()
+                    ->getEntityManager()
+                    ->getRepository('GeniusDesignComponentsNewsBundle:News');
+
+            $news = $repository->getNewsBySlug($newsSlug, $language);
+
+            if (!empty($news)) {
+                $deleted = true;
+                $imageFileName = $news->getImageFileName();
+
+                if (!empty($imageFileName)) {
+                    $entityConfigName = 'genius_design_components_news';
+                    $deleted = $this->get('genius_design_upload.helper')->removeFile($entityConfigName, $imageFileName, true, false);
+                }
+
+                if ($deleted) {
+                    $repository->deleteNewsById($news->getId(), $language);
+                }
+            }
+        }
+
+        return $this->redirectTo();
+    }
+
+    /**
+     * Toogle published parameter for news by given news slug
+     * @return Response
+     */
+    public function togglePublishedAction($newsSlug) {
+        $language = 'pl'; //$this->getLanguageCode();
+
+        if (!empty($newsSlug)) {
+            $repository = $this->getDoctrine()
+                    ->getEntityManager()
+                    ->getRepository('GeniusDesignComponentsNewsBundle:News');
+
+            $result = $repository->tooglePublishedBySlug($newsSlug, $language);
+
+            if ($result) {
+                //message
+            }
+        }
+
+        return $this->redirectTo();
     }
 
     /**
@@ -111,5 +199,5 @@ class NewsController extends MainController {
 
         return parent::redirectTo($route, $parameters);
     }
-    
+
 }

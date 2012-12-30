@@ -71,6 +71,10 @@ stof_doctrine_extensions:
             loggable: false
 
 genius_design_common:
+    date_format:
+        form: dd.MM.yyyy
+        datapicker: dd.mm.yy
+        twig: d.m.Y
     deleted_files_path: %kernel.root_dir%/../web/deleted_files
 
 genius_design_components_news:

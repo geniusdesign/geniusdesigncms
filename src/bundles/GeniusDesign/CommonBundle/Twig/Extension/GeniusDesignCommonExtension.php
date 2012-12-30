@@ -40,6 +40,7 @@ class GeniusDesignCommonExtension extends \Twig_Extension {
     public function getFunctions() {
         return array(
             'genius_design_file_path' => new \Twig_Function_Method($this, 'getPathToFile'),
+            'datapickerFormat' =>  new \Twig_Function_Method($this, 'getDatapickerFormat'),
         );
     }
 
@@ -60,5 +61,12 @@ class GeniusDesignCommonExtension extends \Twig_Extension {
         $helper = $this->getContainer()->get('genius_design_upload.helper');
         return $helper->getFilePath($entityConfigName, $fileName, $size, $withPathBase, $relative);
     }
-
+    
+    /**
+     * Returns datapicker format
+     * @return string
+     */
+    public function getDatapickerFormat() {
+        return $this->getContainer()->getParameter('genius_design_common.date_format.datapicker');
+    }
 }

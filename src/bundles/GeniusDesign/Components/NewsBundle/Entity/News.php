@@ -83,7 +83,7 @@ class News {
      * @var boolean $published
      * @ORM\Column(name="published", type="boolean")
      */
-    private $published = false;
+    private $published = true;
 
     /**
      * @var datetime $created_at
@@ -269,22 +269,13 @@ class News {
     }
 
     /**
-     * Set not published
-     *
-     * @return \GeniusDesign\Components\NewsBundle\Entity\News
-     */
-    public function setNotPublished() {
-        $this->published = false;
-        return $this;
-    }
-    
-    /**
      * Set published
      *
+     * @param $value The boolean value
      * @return \GeniusDesign\Components\NewsBundle\Entity\News
      */
-    public function setPublished() {
-        $this->published = true;
+    public function setPublished($value) {
+        $this->published = $value;
         return $this;
     }
 
