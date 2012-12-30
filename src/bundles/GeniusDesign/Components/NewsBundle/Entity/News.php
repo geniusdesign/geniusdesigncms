@@ -54,6 +54,13 @@ class News {
     private $content;
 
     /**
+     * @var text $autor
+     *
+     * @ORM\Column(name="autor", type="string", nullable=true)
+     */
+    private $autor;
+    
+    /**
      * @var string $displayed_date
      *
      * @ORM\Column(name="displayed_date", type="datetime", nullable=true)
@@ -71,6 +78,12 @@ class News {
      * @ORM\Column(name="language", type="string", length=5)
      */
     private $language;
+
+    /**
+     * @var boolean $published
+     * @ORM\Column(name="published", type="boolean")
+     */
+    private $published = false;
 
     /**
      * @var datetime $created_at
@@ -100,6 +113,12 @@ class News {
      * @var \Symfony\Component\HttpFoundation\File\UploadedFile
      */
     private $image;
+
+    /**
+     * Helper for uploading
+     * @var \GeniusDesign\CommonBundle\Helper\UploadHelper
+     */
+    private $uploadHelper;
 
     /**
      * Get id
@@ -191,6 +210,26 @@ class News {
     }
 
     /**
+     * Set autor
+     *
+     * @param string $autor
+     * @return \GeniusDesign\Components\NewsBundle\Entity\News
+     */
+    public function setAutor($autor) {
+        $this->autor = $autor;
+        return $this;
+    }
+
+    /**
+     * Get autor
+     *
+     * @return string 
+     */
+    public function getAutor() {
+        return $this->autor;
+    }
+    
+    /**
      * Set displayed date
      *
      * @param datetime $date
@@ -229,6 +268,34 @@ class News {
         return $this->image_file_name;
     }
 
+    /**
+     * Set not published
+     *
+     * @return \GeniusDesign\Components\NewsBundle\Entity\News
+     */
+    public function setNotPublished() {
+        $this->published = false;
+        return $this;
+    }
+    
+    /**
+     * Set published
+     *
+     * @return \GeniusDesign\Components\NewsBundle\Entity\News
+     */
+    public function setPublished() {
+        $this->published = true;
+        return $this;
+    }
+
+    /**
+     * Get published
+     *
+     * @return boolean 
+     */
+    public function getPublished() {
+        return $this->published;
+    }
     /**
      * Set created_at
      *
@@ -320,7 +387,7 @@ class News {
      * Sets the uploaded image object
      * 
      * @param \Symfony\Component\HttpFoundation\File\UploadedFile $image The uploaded image
-     * @return \Meritoo\Component\NewsBundle\Entity\News
+     * @return \GeniusDesign\Components\NewsBundle\Entity\News
      */
     public function setImage($image) {
         $this->image = $image;
@@ -329,7 +396,7 @@ class News {
 
     /**
      * Returns helper for uploading
-     * @return \Meritoo\Component\CommonBundle\Helper\UploadHelper
+     * @return \GeniusDesign\CommonBundle\Helper\UploadHelper
      */
     public function getUploadHelper() {
         return $this->uploadHelper;
@@ -338,10 +405,10 @@ class News {
     /**
      * Sets the helper
      * 
-     * @param \Meritoo\Component\CommonBundle\Helper\UploadHelper $uploadHelper The helper service / object
-     * @return \Meritoo\Component\NewsBundle\Entity\News
+     * @param \GeniusDesign\CommonBundle\Helper\UploadHelper $uploadHelper The helper service / object
+     * @return \GeniusDesign\Components\NewsBundle\Entity\News
      */
-    public function setUploadHelper(\Meritoo\Component\CommonBundle\Helper\UploadHelper $uploadHelper) {
+    public function setUploadHelper(\GeniusDesign\CommonBundle\Helper\UploadHelper $uploadHelper) {
         $this->uploadHelper = $uploadHelper;
         return $this;
     }
@@ -357,29 +424,29 @@ class News {
         $image = $this->getImage();
 
         if ($image !== null) {
-            $entityClassName = __CLASS__;
-            $dimensionsOk = $this->getUploadHelper()->checkImageDimensions($entityClassName, $image, 'image');
+            //$entityClassName = __CLASS__;
+            $entityConfigName = 'genius_design_components_news';
+            $dimensionsOk = true; //$this->getUploadHelper()->checkImageDimensions($entityClassName, $image, 'image');
 
             if ($dimensionsOk) {
                 /*
                  * Removing old image / file
                  */
-                /* Temporarily disabled
                 $fileName = $this->getImageFileName();
 
                 if (!empty($fileName)) {
-                    $removed = $this->getUploadHelper()->removeFile($entityClassName, $fileName, true, false);
+                    
+                    $removed = $this->getUploadHelper()->removeFile($entityConfigName, $fileName, true, false);
 
                     if ($removed) {
                         $this->setImageFileName(null);
                     }
                 }
-                */
-                
+
                 /*
-                 * Setting proper name for the new image / file
+                 * Setting future name for the new image / file
                  */
-                $this->setProperFileName();
+                $this->setFutureFileName();
             }
         }
     }
@@ -395,12 +462,11 @@ class News {
         $image = $this->getImage();
 
         if ($image !== null) {
-            $entityClassName = __CLASS__;
-            $uploadedFile = $image;
+            $entityConfigName = 'genius_design_components_news';
             $fileName = $this->getImageFileName();
             $itsImage = true;
 
-            $this->getUploadHelper()->upload($entityClassName, $uploadedFile, $fileName, $itsImage);
+            $this->getUploadHelper()->upload($entityConfigName, $image, $fileName, $itsImage);
         }
     }
 
@@ -408,7 +474,7 @@ class News {
      * Sets proper name of file / image
      * @return void
      */
-    private function setProperFileName() {
+    private function setFutureFileName() {
         $name = $this->getImageFileName();
 
         if (empty($name)) {

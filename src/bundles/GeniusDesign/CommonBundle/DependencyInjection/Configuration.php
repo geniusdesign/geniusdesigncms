@@ -20,9 +20,13 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('genius_design_common');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode
+            ->children()
+                ->scalarNode('deleted_files_path')
+                    ->defaultValue('%kernel.root_dir%/../web/deleted_files')
+                ->end()
+            ->end()
+        ->end();
 
         return $treeBuilder;
     }

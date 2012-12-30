@@ -55,6 +55,7 @@ class NewsController extends MainController {
         $language = 'pl'; //$this->getLanguageCode();
         $request = $this->getRequest();
         $entityManager = $this->getDoctrine()->getEntityManager();
+        $newsHelper = $this->get('genius_design_news.helper');
 
         $repository = $entityManager->getRepository('GeniusDesignComponentsNewsBundle:News');
         $news = $repository->getNewsBySlug($newsSlug, $language);
@@ -63,12 +64,19 @@ class NewsController extends MainController {
             return $this->redirectTo();
         }
 
-        $form = $this->createForm(new NewsType(), $news);
+        $dateVisible = $newsHelper->isDateEnabled();
+        $imageVisible = $newsHelper->isImageEnabled();
+        $autorVisible = $newsHelper->isAutorEnabled();
+        $formatDate = 'dd.MM.yyyy';
+        
+        $form = $this->createForm(new NewsType($autorVisible, $dateVisible, $imageVisible, $formatDate), $news);
         
         if (strtolower($request->getMethod()) == 'post') {
             $form->bindRequest($request);
 
             if ($form->isValid()) {
+                $uploadHelper = $this->get('genius_design_upload.helper');
+                $news->setUploadHelper($uploadHelper);
 
                 $entityManager->persist($news);
                 $entityManager->flush();
@@ -83,7 +91,8 @@ class NewsController extends MainController {
         $parameters = array(
             'form' => $form->createView(),
             'news' => $news,
-            'language' => $language
+            'language' => $language,
+            'isImageVisible' => $imageVisible
         );
         return $this->render('GeniusDesignBackendBundle:News:edit.html.twig', $parameters);
     }

@@ -21,6 +21,66 @@ class GeniusDesignComponentsNewsExtension extends Extension {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        /*
+         * Parameters for uploading
+         */
+        if (isset($config['upload'])) {
+            $uploadSettings = $config['upload'];
+
+            /*
+             * Paths: relative and absolute
+             */
+            if (isset($uploadSettings['paths'])) {
+                $paths = $uploadSettings['paths'];
+
+                if (isset($paths['relative'])) {
+                    $container->setParameter('genius_design_components_news.upload.paths.relative', trim($paths['relative']));
+                }
+
+                if (isset($paths['absolute'])) {
+                    $container->setParameter('genius_design_components_news.upload.paths.absolute', trim($paths['absolute']));
+                }
+            }
+
+            /*
+             * Thumbnails sizes
+             */
+            if (isset($uploadSettings['sizes'])) {
+                $sizes = $uploadSettings['sizes'];
+                $values = array();
+
+                foreach ($sizes as $name => $size) {
+                    if (!empty($size)) {
+                        $values[$name] = $size;
+                        $container->setParameter(sprintf('genius_design_components_news.upload.size.%s', $name), str_replace(' ', '', trim($size)));
+                    }
+                }
+
+                $container->setParameter('genius_design_components_news.upload.sizes', $values);
+            }
+        }
+
+        /*
+         * Returns information whether to show the picture
+         */
+        if (isset($config['showImage'])) {
+            $container->setParameter('genius_design_components_news.show_image', $config['showImage']);
+        }
+        
+        /*
+         * Returns information whether to show the autor
+         */
+        if (isset($config['showAutor'])) {
+            $container->setParameter('genius_design_components_news.show_autor', $config['showAutor']);
+        }
+        
+        /*
+         * Returns information whether to show the date
+         */
+        if (isset($config['showDate'])) {
+            $container->setParameter('genius_design_components_news.show_date', $config['showDate']);
+        }
+
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
     }

@@ -69,3 +69,19 @@ stof_doctrine_extensions:
             translatable: false
             tree: false
             loggable: false
+
+genius_design_common:
+    deleted_files_path: %kernel.root_dir%/../web/deleted_files
+
+genius_design_components_news:
+    showImage: true
+    showAutor: true
+    showDate: true
+    upload:
+        paths:
+            relative: /upload/news
+            absolute: %kernel.root_dir%/../web/upload/news
+        sizes:
+            tiny: 70 x 35
+            small: 115 x 80
+            large: 800 x 600

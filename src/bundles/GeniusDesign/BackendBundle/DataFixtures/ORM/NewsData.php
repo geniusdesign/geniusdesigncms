@@ -53,6 +53,7 @@ class NewsData implements FixtureInterface, OrderedFixtureInterface, ContainerAw
         $today = new \DateTime();
 
         $titleTemplate = 'Aktualność nr %d';
+        $autor = 'Jan Kowalski';
         $entranceTemplate = 'Wstęp - %s';
         $contentTemplate = 'Treść - %s';
 
@@ -69,7 +70,9 @@ class NewsData implements FixtureInterface, OrderedFixtureInterface, ContainerAw
                         ->setEntrance($entrance)
                         ->setContent($content)
                         ->setImageFileName(null)
+                        ->setAutor($autor)
                         ->setDisplayedDate($displayedDate)
+                        ->setNotPublished()
                         ->setLanguage($language);
 
                 $manager->persist($news);
@@ -82,7 +85,7 @@ class NewsData implements FixtureInterface, OrderedFixtureInterface, ContainerAw
      * {@inheritDoc}
      */
     public function getOrder() {
-        return 1;
+        return 2;
     }
 
 }
