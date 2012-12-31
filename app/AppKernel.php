@@ -32,14 +32,15 @@ class AppKernel extends Kernel {
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             
-            // Backend's Bundle
+            // Backend, Frontend, Common - Bundles
             new GeniusDesign\BackendBundle\GeniusDesignBackendBundle(),
+            new GeniusDesign\CommonBundle\GeniusDesignCommonBundle(),
+            new GeniusDesign\FrontendBundle\GeniusDesignFrontendBundle(),
             
             // Components Bundles
+            new GeniusDesign\Components\LanguageBundle\GeniusDesignComponentsLanguageBundle(),
             new GeniusDesign\Components\NewsBundle\GeniusDesignComponentsNewsBundle(),
             new GeniusDesign\Components\ContentBundle\GeniusDesignComponentsContentBundle(),
-            new GeniusDesign\FrontendBundle\GeniusDesignFrontendBundle(),
-            new GeniusDesign\CommonBundle\GeniusDesignCommonBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
