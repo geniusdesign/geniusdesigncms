@@ -1,0 +1,26 @@
+{% set noticeMessages = app.session.flashbag.get('notice') %}
+{% set errorMessages = app.session.flashbag.get('error') %}
+
+{% if noticeMessages is not empty or errorMessages is not empty %}
+    <div id="communiques">
+        {% if noticeMessages is not empty %}
+            <div class="flash-notice">
+                {% for flashMessage in noticeMessages %}
+                    <div class="">
+                        {{ flashMessage }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if errorMessages is not empty %}
+            <div class="flash-error">
+                {% for flashMessage in errorMessages %}
+                    <div class="">
+                        {{ flashMessage }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endif %}

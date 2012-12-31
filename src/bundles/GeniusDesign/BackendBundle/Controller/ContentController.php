@@ -66,8 +66,11 @@ class ContentController extends MainController {
                 $entityManager->persist($content);
                 $entityManager->flush();
 
+                $this->addFlashMessage('notice', 'Zapisałem');
                 return $this->redirectTo();
             }
+            
+            $this->addFlashMessage('error', 'Nie zapisałem');
         }
         
         /*

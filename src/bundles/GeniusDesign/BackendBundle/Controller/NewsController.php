@@ -114,8 +114,11 @@ class NewsController extends MainController {
                 $entityManager->persist($news);
                 $entityManager->flush();
 
+                $this->addFlashMessage('notice', 'Zapisałem');
                 return $this->redirectTo();
             }
+
+            $this->addFlashMessage('error', 'Nie zapisałem');
         }
 
         /*
@@ -137,6 +140,8 @@ class NewsController extends MainController {
      */
     public function deleteAction($newsSlug) {
         $language = 'pl'; //$this->getLanguageCode();
+        $type = 'error';
+        $message = 'Nie usunąłem';
 
         if (!empty($newsSlug)) {
             $repository = $this->getDoctrine()
@@ -156,10 +161,13 @@ class NewsController extends MainController {
 
                 if ($deleted) {
                     $repository->deleteNewsById($news->getId(), $language);
+                    $type = 'notice';
+                    $message = 'Usunąłem';
                 }
             }
         }
 
+        $this->addFlashMessage($type, $message);
         return $this->redirectTo();
     }
 
@@ -169,6 +177,8 @@ class NewsController extends MainController {
      */
     public function togglePublishedAction($newsSlug) {
         $language = 'pl'; //$this->getLanguageCode();
+        $type = 'error';
+        $message = 'Nie zmieniłem';
 
         if (!empty($newsSlug)) {
             $repository = $this->getDoctrine()
@@ -178,10 +188,12 @@ class NewsController extends MainController {
             $result = $repository->tooglePublishedBySlug($newsSlug, $language);
 
             if ($result) {
-                //message
+                $type = 'notice';
+                $message = 'Zmieniłem';
             }
         }
 
+        $this->addFlashMessage($type, $message);
         return $this->redirectTo();
     }
 

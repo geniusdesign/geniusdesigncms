@@ -4,7 +4,6 @@ body{
     line-height: 15px;
     margin: 0;
     padding: 0;
-    text-shadow: #fff 0px 1px 0px;
 }
 
 html,
@@ -102,6 +101,57 @@ a,
     float: left;
     width: 888px;
     padding: 0 0 0 10px;
+}
+.main .content .flash-notice,
+.main .content .flash-error{
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    clear: both;
+    float: left;
+    margin-bottom: 10px;
+    padding: 10px 0;
+    width: 100%;
+}
+.main .content .flash-notice div,
+.main .content .flash-error div{
+    background-repeat: no-repeat;
+    background-position: 20px 50%;
+    clear: both;
+    font-weight: bold;
+    float: left;
+    padding-left: 50px;
+    margin: 2px 0;
+}
+.main .content .flash-notice{
+    border: 1px solid #4F7747;
+    background: #fcf9db; /* Old browsers */
+    background: -moz-linear-gradient(top,  #fcf9db 1%, #ecf9ac 51%, #cbe589 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#fcf9db), color-stop(51%,#ecf9ac), color-stop(100%,#cbe589)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #fcf9db 1%,#ecf9ac 51%,#cbe589 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #fcf9db 1%,#ecf9ac 51%,#cbe589 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #fcf9db 1%,#ecf9ac 51%,#cbe589 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #fcf9db 1%,#ecf9ac 51%,#cbe589 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcf9db', endColorstr='#cbe589',GradientType=0 ); /* IE6-9 */
+    color: #4F7747;
+}
+.main .content .flash-error{
+    border: 1px solid #724444;
+    background: #ffd6d6; /* Old browsers */
+    background: -moz-linear-gradient(top,  #ffd6d6 0%, #ffafaf 51%, #d87f7f 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffd6d6), color-stop(51%,#ffafaf), color-stop(100%,#d87f7f)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #ffd6d6 0%,#ffafaf 51%,#d87f7f 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #ffd6d6 0%,#ffafaf 51%,#d87f7f 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #ffd6d6 0%,#ffafaf 51%,#d87f7f 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #ffd6d6 0%,#ffafaf 51%,#d87f7f 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffd6d6', endColorstr='#d87f7f',GradientType=0 ); /* IE6-9 */
+    color: #724444;
+}
+.main .content .flash-notice div{
+    background-image: url('/bundles/geniusdesigncommon/img/icons/tick-circle.png');
+}
+.main .content .flash-error div{
+    background-image: url('/bundles/geniusdesigncommon/img/icons/exclamation-red.png');
 }
 .main .content .options-box{
     clear: both;
