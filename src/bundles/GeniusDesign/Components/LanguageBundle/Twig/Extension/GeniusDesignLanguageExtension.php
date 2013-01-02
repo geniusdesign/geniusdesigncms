@@ -94,7 +94,7 @@ class GeniusDesignLanguageExtension extends \Twig_Extension {
         }
 
         $languageParameterName = $this->getContainer()
-                ->get('genius_design_common.helper')
+                ->get('genius_design_language.helper')
                 ->getLanguageRequestParameterName();
         
         $currentLanguageCode = $this->getContainer()

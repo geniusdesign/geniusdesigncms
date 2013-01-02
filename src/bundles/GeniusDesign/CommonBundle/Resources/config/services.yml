@@ -2,6 +2,7 @@ parameters:
     genius_design_upload.helper.class: GeniusDesign\CommonBundle\Helper\UploadHelper
     genius_design_common.helper.class: GeniusDesign\CommonBundle\Helper\CommonHelper
     genius_design_common.twig.extension.class: GeniusDesign\CommonBundle\Twig\Extension\GeniusDesignCommonExtension
+    genius_design.controller.listener.class: GeniusDesign\CommonBundle\EventListener\ControllerListener
     
 services:
     genius_design_upload.helper:
@@ -21,3 +22,10 @@ services:
         shared: true
         tags:
             - {name: twig.extension}
+    genius_design.controller.listener:
+        class: %genius_design.controller.listener.class%
+        arguments:
+            container: "@service_container"
+        tags:
+            - {name: kernel.event_listener, event: kernel.controller, method: onKernelController}
+            - {name: kernel.event_listener, event: kernel.response, method: onKernelResponse}

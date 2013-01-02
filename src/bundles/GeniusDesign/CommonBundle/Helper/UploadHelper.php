@@ -153,7 +153,7 @@ class UploadHelper {
      * Deletes files
      * Removes also directories if are empty.
      * 
-     * @param \Meritoo\Component\CommonBundle\Upload\UploadSettings $settings The upload settings
+     * @param string $entityConfigName
      * @param string $fileName The file name to delete
      * @param [boolean $deleteOriginal = false] If is set to true, original file will be deleted too. Otherwise - not.
      * @param [boolean $moveInsteadRemove = true] If is set to true, file will be moved in another place instead of removing. Otherwise - file will be permanently removed.
@@ -299,7 +299,7 @@ class UploadHelper {
      * Returns value of the container's parameter
      * 
      * @param string
-     * @param string $subName This is the appropriate parameter which is needed. It's a part of long name of parameter, e.g. "paths.browser" in "meritoo_component_gallery.upload.Image.paths.browser".
+     * @param string $subName This is the appropriate parameter which is needed. It's a part of long name of parameter.
      * @return mixed
      */
     private function getContainerParameterValue($entityConfigName, $subName) {
@@ -323,7 +323,7 @@ class UploadHelper {
      * Looks for parameter without or with name of entity's class.
      * 
      * @param string 
-     * @param string $subName This is the appropriate parameter which is needed. It's a part of long name of parameter, e.g. "paths.browser" in "meritoo_component_gallery.upload.Image.paths.browser".
+     * @param string $subName This is the appropriate parameter which is needed. It's a part of long name of parameter
      * @return string
      */
     private function getContainerParameterName($entityConfigName, $subName) {

@@ -43,7 +43,7 @@ class MainRepository extends EntityRepository {
      * Sets the default alias used by Query Builder
      * 
      * @param string $alias The default alias
-     * @return \Meritoo\Component\CommonBundle\Repository\BaseRepository
+     * @return \GeniusDesign\CommonBundle\Repository\MainRepository
      */
     public function setDefaultAlias($alias) {
         $this->defaultAlias = $alias;
@@ -62,7 +62,7 @@ class MainRepository extends EntityRepository {
      * Sets the language code
      * 
      * @param string $languageCode The language code
-     * @return \Meritoo\Component\CommonBundle\Repository\BaseRepository
+     * @return \GeniusDesign\CommonBundle\Repository\MainRepository
      */
     public function setLanguageCode($languageCode) {
         $this->languageCode = $languageCode;
@@ -177,7 +177,7 @@ class MainRepository extends EntityRepository {
      * Sets the option that indicates if translations of the default language are used when there is no translations for current language
      * 
      * @param [boolean $use = true] The option's value
-     * @return \Meritoo\Component\CommonBundle\Repository\BaseRepository
+     * @return \GeniusDesign\CommonBundle\Repository\MainRepository
      */
     public function setUseTranslationsFallback($use = true) {
         $this->useTranslationsFallback = $use;

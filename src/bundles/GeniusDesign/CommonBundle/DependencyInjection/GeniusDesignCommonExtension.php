@@ -20,14 +20,7 @@ class GeniusDesignCommonExtension extends Extension {
     public function load(array $configs, ContainerBuilder $container) {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
-        
-        /*
-         * Directory to deleted files
-         */
-        if (isset($config['language_request_parameter_name'])) {
-            $container->setParameter('genius_design_common.language_request_parameter_name', trim($config['language_request_parameter_name']));
-        }
-        
+
         /*
          * Directory to deleted files
          */

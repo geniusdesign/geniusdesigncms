@@ -5,8 +5,10 @@ namespace GeniusDesign\CommonBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use GeniusDesign\CommonBundle\Interfaces\EventfulControllerInterface;
+use GeniusDesign\CommonBundle\Controller\RequestParametersController;
 
-abstract class MainController extends Controller {
+abstract class MainController extends Controller implements EventfulControllerInterface {
 
     /**
      * Returns Session
@@ -24,6 +26,56 @@ abstract class MainController extends Controller {
      */
     public function getFlashBag() {
         return $this->getSession()->getFlashBag();
+    }
+
+    /**
+     * Returns the language code from request or from database
+     * @return string
+     */
+    public function getLanguageCode() {
+        return $this->get('genius_design_language.helper')->getLanguageCode();
+    }
+    
+    /**
+     * Implements EventfulControllerInterface
+     * 
+     * @param Request $request The request
+     * @return void
+     */
+    public function preExecute(Request $request) {
+        $languagesHelper = $this->container->get('genius_design_language.helper');
+        $commonHelper = $this->container->get('genius_design_common.helper');
+        
+        $isLanguageParameterMissing = $commonHelper->isLanguageParameterMissing();
+                
+        if ($isLanguageParameterMissing) {
+            $controller = new RequestParametersController();
+
+            if ($controller instanceof \Symfony\Component\DependencyInjection\ContainerAwareInterface) {
+                $controller->setContainer($this->container);
+            }
+
+            return array(
+                $controller,
+                'updateParametersAction'
+            );
+        }
+
+        if ($languagesHelper->areLanguagesDefined()) {
+            $this->get('gedmo.listener.translatable')->setPersistDefaultLocaleTranslation(true);
+            $languagesHelper->setTranslatableLocale();
+        }
+    }
+
+    /**
+     * Implements EventfulControllerInterface
+     * 
+     * @param Request $request The request
+     * @param Response $response The response
+     * @return void
+     */
+    public function postExecute(Request $request, Response $response) {
+        // I have nothing to do here
     }
 
     /**

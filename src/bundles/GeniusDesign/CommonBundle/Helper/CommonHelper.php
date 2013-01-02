@@ -3,6 +3,8 @@
 namespace GeniusDesign\CommonBundle\Helper;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Symfony\Component\Routing\Route;
 
 /**
  * Helper for the bundles
@@ -37,14 +39,6 @@ class CommonHelper {
     }
 
     /**
-     * Returns name of the language parameter for request
-     * @return string
-     */
-    public function getLanguageRequestParameterName() {
-        return $this->getContainer()->getParameter('genius_design_common.language_request_parameter_name');
-    }
-    
-    /**
      * Returns name of the current route
      * @return string
      */
@@ -53,7 +47,20 @@ class CommonHelper {
                         ->get('request')
                         ->get('_route');
     }
-    
+
+    /**
+     * Returns the route object for given route's name
+     * 
+     * @param string $routeName Name of the route
+     * @return \Symfony\Component\Routing\Route
+     */
+    public function getRoute($routeName) {
+        return $this->getContainer()
+                        ->get('router')
+                        ->getRouteCollection()
+                        ->get($routeName);
+    }
+
     /**
      * Returns parameters from request
      * 
@@ -71,7 +78,7 @@ class CommonHelper {
         if (!empty($attributes)) {
             foreach ($attributes as $parameter => $value) {
                 $firstChar = substr($parameter, 0, 1);
-                
+
                 if ($skipSystemParametrs && $firstChar == '_') {
                     continue;
                 }
@@ -82,5 +89,88 @@ class CommonHelper {
 
         return $parameters;
     }
-    
+
+    /**
+     * Returns parameters required by given route
+     * 
+     * @param [string $routeName = ''] Name of the route
+     * @return array
+     */
+    public function getRequiredParameters($routeName = '') {
+        $parameters = array();
+
+        $languagesHelper = $this->getContainer()->get('genius_design_language.helper');
+        $languageRequestParameter = $languagesHelper->getLanguageRequestParameterName();
+
+        if ($languagesHelper->areLanguagesDefined() && !empty($languageRequestParameter)) {
+            if ($this->isParameterUsedInRouting($languageRequestParameter, $routeName)) {
+                $parameters[$languageRequestParameter] = $languagesHelper->getLanguageCode();
+            }
+        }
+
+        return $parameters;
+    }
+
+    /**
+     * Returns information if given parameter is used by given route.
+     * If no route is passed, current route is used.
+     * 
+     * @param string $parameter Name of the parameter to check
+     * @param [string $routeName = ''] Name of the route
+     * @return boolean
+     * 
+     * @throws RouteNotFoundException 
+     */
+    public function isParameterUsedInRouting($parameter, $routeName = '') {
+        $parameters = array();
+        $route = null;
+
+        if (empty($routeName)) {
+            $routeName = $this->getContainer()
+                    ->get('request')
+                    ->attributes
+                    ->get('_route');
+        }
+
+        if (is_string($routeName)) {
+            $route = $this->getRoute($routeName);
+        }
+
+        if (!($route instanceof Route)) {
+            throw new RouteNotFoundException(sprintf('The route \'%s\' doesn\'t exist!', $routeName));
+        }
+
+        $parameters = $route->getDefaults();
+
+        return key_exists($parameter, $parameters);
+    }
+
+    /**
+     * Returns information if there is required of parameters
+     * For the rebuild if will be the other parameters
+     * 
+     * @param [string $routeName = ''] Name of the route
+     * @return boolean 
+     */
+    public function isLanguageParameterMissing($routeName = '') {
+        $needed = false;
+
+        $languagesHelper = $this->getContainer()->get('genius_design_language.helper');
+
+        $languageCode = $languagesHelper->getLanguageCode(false);
+        $languageRequestParameter = $languagesHelper->getLanguageRequestParameterName();
+
+        if ($languagesHelper->areLanguagesDefined() && empty($languageCode) && !empty($languageRequestParameter)) {
+            if (!$needed && $this->isParameterUsedInRouting($languageRequestParameter, $routeName)) {
+                $value = $languagesHelper->getLanguageCode(false);
+
+                if (empty($value)) {
+                    $needed = true;
+                }
+            }
+        }
+
+        return $needed;
+    }
+
 }

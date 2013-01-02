@@ -2,7 +2,7 @@
     <ul>
         {% for item in languages %}
             <li class="{{ item.getLanguageCode() }}{% if item.getLanguageCode() == currentLanguageCode %} current{% endif %}">
-                <a href="{{ path(routeName, parametersFromRequest | merge({languageParameterName: item.getLanguageCode()}) ) }}">
+                <a href="{{ path(routeName, parametersFromRequest | merge({'languageCode' : item.getLanguageCode()}) ) }}">
                     {% if not showNames or showBoth %}
                         <img src="{{ item.getFlagPath() }}">
                     {% endif %}
