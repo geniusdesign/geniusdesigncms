@@ -5,6 +5,7 @@ namespace GeniusDesign\Components\NewsBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Translatable\Translatable;
 
 /**
  * GeniusDesign\Components\NewsBundle\Entity\News
@@ -13,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="GeniusDesign\Components\NewsBundle\Repository\NewsRepository")
  * @ORM\HasLifecycleCallbacks
  */
-class News {
+class News implements Translatable {
 
     /**
      * @var integer $id
@@ -28,6 +29,7 @@ class News {
      * @var string $title
      *
      * @ORM\Column(name="title", type="string", length=100)
+     * @Gedmo\Translatable
      */
     private $title;
 
@@ -36,6 +38,7 @@ class News {
      *
      * @ORM\Column(name="title_slug", type="string", length=100)
      * @Gedmo\Slug(fields={"title"})
+     * @Gedmo\Translatable
      */
     private $title_slug;
 
@@ -43,6 +46,7 @@ class News {
      * @var text $entrance
      *
      * @ORM\Column(name="entrance", type="text")
+     * @Gedmo\Translatable
      */
     private $entrance;
 
@@ -50,6 +54,7 @@ class News {
      * @var text $content
      *
      * @ORM\Column(name="content", type="text", nullable=true)
+     * @Gedmo\Translatable
      */
     private $content;
 
@@ -59,7 +64,7 @@ class News {
      * @ORM\Column(name="autor", type="string", nullable=true)
      */
     private $autor;
-    
+
     /**
      * @var string $displayed_date
      *
@@ -72,12 +77,6 @@ class News {
      * @ORM\Column(name="image_file_name", type="string", length=70, nullable=true)
      */
     private $image_file_name;
-
-    /**
-     * @var text $language
-     * @ORM\Column(name="language", type="string", length=5)
-     */
-    private $language;
 
     /**
      * @var boolean $published
@@ -119,6 +118,13 @@ class News {
      * @var \GeniusDesign\CommonBundle\Helper\UploadHelper
      */
     private $uploadHelper;
+
+    /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
 
     /**
      * Get id
@@ -228,7 +234,7 @@ class News {
     public function getAutor() {
         return $this->autor;
     }
-    
+
     /**
      * Set displayed date
      *
@@ -287,6 +293,7 @@ class News {
     public function getPublished() {
         return $this->published;
     }
+
     /**
      * Set created_at
      *
@@ -345,25 +352,6 @@ class News {
     public function setDeletedAt($deleted_at) {
         $this->deleted_at = $deleted_at;
         return $this;
-    }
-
-    /**
-     * Sets localization code
-     * 
-     * @param string $language The language string, language code
-     * @return \GeniusDesign\Components\NewsBundle\Entity\News
-     */
-    public function setLanguage($language) {
-        $this->language = $language;
-        return $this;
-    }
-
-    /**
-     * Get localization code
-     * @return string 
-     */
-    public function getLanguage() {
-        return $this->language;
     }
 
     /**
@@ -426,7 +414,7 @@ class News {
                 $fileName = $this->getImageFileName();
 
                 if (!empty($fileName)) {
-                    
+
                     $removed = $this->getUploadHelper()->removeFile($entityConfigName, $fileName, true, false);
 
                     if ($removed) {
@@ -475,6 +463,25 @@ class News {
             $name = $helper->getUniqueFileName($originalFileName, $this->getId());
             $this->setImageFileName($name);
         }
+    }
+
+    /**
+     * Sets localization code
+     * 
+     * @param string $language The language string, language code
+     * @return \GeniusDesign\Components\NewsBundle\Entity\News
+     */
+    public function setTranslatableLocale($locale) {
+        $this->locale = $locale;
+        return $this;
+    }
+
+    /**
+     * Get localization code
+     * @return string 
+     */
+    public function getTranslatableLocale() {
+        return $this->locale;
     }
 
 }

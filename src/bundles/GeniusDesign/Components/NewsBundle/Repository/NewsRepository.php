@@ -5,6 +5,7 @@ namespace GeniusDesign\Components\NewsBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
+use GeniusDesign\CommonBundle\Repository\MainRepository;
 
 /**
  * Repository class for news
@@ -12,7 +13,7 @@ use Doctrine\ORM\QueryBuilder;
  * @author Paweł Cichoń <cichonpawelhd@gmail.com>
  * @copyright GeniusDesign
  */
-class NewsRepository extends EntityRepository {
+class NewsRepository extends MainRepository {
 
     /**
      * Returns all news
@@ -22,61 +23,55 @@ class NewsRepository extends EntityRepository {
      * @param [integer $offset = null] The start position, offset
      * @return array
      */
-    public function getNews($language = '', $limit = null, $offset = null) {
+    public function getNews($limit = null, $offset = null) {
         $criteria = array(
-            'language' => $language,
             'deleted_at' => null
         );
 
         $orderBy = array('displayed_date' => 'desc');
 
-        return $this->findBy($criteria, $orderBy, $limit, $offset);
+        return $this->getEffect($criteria, $orderBy, $limit, $offset, true);
     }
 
     /**
      * Returns news by given title slug
      * 
      * @param string $newsSlug The news slug
-     * @param [string $language = ''] The language title short
      * @return array
      */
-    public function getNewsBySlug($newsSlug, $language = '') {
+    public function getNewsBySlug($newsSlug) {
         $criteria = array(
             'title_slug' => $newsSlug,
-            'language' => $language,
             'deleted_at' => null
         );
 
-        return $this->findOneBy($criteria);
+        return $this->getEffect($criteria, array(), 0, 0, false);
     }
 
     /**
      * Returns news by given news id
      * 
      * @param string $newsId The news Id
-     * @param [string $language = ''] The language title short
      * @return array
      */
-    public function getNewsById($newsId, $language = '') {
+    public function getNewsById($newsId) {
         $criteria = array(
             'id' => $newsId,
-            'language' => $language,
             'deleted_at' => null
         );
 
-        return $this->findOneBy($criteria);
+        return $this->getEffect($criteria, array(), 0, 0, false);
     }
 
     /**
      * Deletes news by given news id
      * 
      * @param string $newsId The news id
-     * @param [string $language = ''] The language title short
      * @return array
      */
-    public function deleteNewsById($newsId, $language = '') {
+    public function deleteNewsById($newsId) {
         $result = false;
-        $news = $this->getNewsById($newsId, $language);
+        $news = $this->getRow($newsId);
 
         if (!empty($news)) {
             $manager = $this->getEntityManager();
@@ -93,12 +88,11 @@ class NewsRepository extends EntityRepository {
      * Toogle published news by given news slug
      * 
      * @param string $newsSlug The news slug
-     * @param [string $language = ''] The language title short
      * @return array
      */
-    public function tooglePublishedBySlug($newsSlug, $language = '') {
+    public function tooglePublishedBySlug($newsSlug) {
         $result = false;
-        $news = $this->getNewsBySlug($newsSlug, $language);
+        $news = $this->getNewsBySlug($newsSlug);
 
         if (!empty($news)) {
             $manager = $this->getEntityManager();

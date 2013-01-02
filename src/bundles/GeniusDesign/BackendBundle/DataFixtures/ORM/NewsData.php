@@ -47,9 +47,9 @@ class NewsData implements FixtureInterface, OrderedFixtureInterface, ContainerAw
     public function load(\Doctrine\Common\Persistence\ObjectManager $manager) {
         $maxNewsCount = 4;
         $languages = array(
-            'pl', 'en'
+            'pl_PL', 'en_US', 'de_DE'
         );
-        
+
         $today = new \DateTime();
 
         $titleTemplate = 'Aktualność nr %d';
@@ -57,23 +57,30 @@ class NewsData implements FixtureInterface, OrderedFixtureInterface, ContainerAw
         $entranceTemplate = 'Wstęp - %s';
         $contentTemplate = 'Treść - %s';
 
-        foreach ($languages as $language){
-            for ($i = 1; $i <= $maxNewsCount; $i++) {
-                $title = sprintf($titleTemplate, $i);
-                $titleLowered = mb_strtolower($title, 'UTF-8');
-                $entrance = sprintf($entranceTemplate, $titleLowered);
-                $content = sprintf($contentTemplate, $titleLowered);
-                $displayedDate = $today;
+        for ($i = 1; $i <= $maxNewsCount; $i++) {
+            $title = sprintf($titleTemplate, $i);
+            $titleLowered = mb_strtolower($title, 'UTF-8');
+            $entrance = sprintf($entranceTemplate, $titleLowered);
+            $content = sprintf($contentTemplate, $titleLowered);
+            $displayedDate = $today;
 
-                $news = new News();
-                $news->setTitle($title)
-                        ->setEntrance($entrance)
-                        ->setContent($content)
-                        ->setImageFileName(null)
-                        ->setAutor($autor)
-                        ->setDisplayedDate($displayedDate)
-                        ->setPublished(true)
-                        ->setLanguage($language);
+            $news = new News();
+            $news->setTitle($title)
+                    ->setEntrance($entrance)
+                    ->setContent($content)
+                    ->setImageFileName(null)
+                    ->setAutor($autor)
+                    ->setDisplayedDate($displayedDate)
+                    ->setPublished(true);
+
+            $manager->persist($news);
+            $manager->flush();
+
+            foreach ($languages as $language) {
+                $news->setTitle($title . ' - ' . $language)
+                        ->setEntrance($entrance . ' - ' . $language)
+                        ->setContent($content . ' - ' . $language)
+                        ->setTranslatableLocale($language);
 
                 $manager->persist($news);
                 $manager->flush();
