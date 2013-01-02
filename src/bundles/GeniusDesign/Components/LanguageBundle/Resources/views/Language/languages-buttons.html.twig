@@ -1,0 +1,17 @@
+<div id="languages-buttons">
+    <ul>
+        {% for item in languages %}
+            <li class="{{ item.getLanguageCode() }}{% if item.getLanguageCode() == currentLanguageCode %} current{% endif %}">
+                <a href="{{ path(routeName, parametersFromRequest | merge({languageParameterName: item.getLanguageCode()}) ) }}">
+                    {% if not showNames or showBoth %}
+                        <img src="{{ item.getFlagPath() }}">
+                    {% endif %}
+                        
+                    {% if showNames or showBoth %}
+                        <span class='name'>{{ item.getTitle() }}</span> 
+                    {% endif %}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

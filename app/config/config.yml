@@ -79,6 +79,7 @@ stof_doctrine_extensions:
             loggable: false
 
 genius_design_common:
+    language_request_parameter_name: languageCode
     date_format:
         form: dd.MM.yyyy
         datapicker: dd.mm.yy

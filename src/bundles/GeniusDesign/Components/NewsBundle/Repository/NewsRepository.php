@@ -2,9 +2,8 @@
 
 namespace GeniusDesign\Components\NewsBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\QueryBuilder;
+//use Doctrine\ORM\Mapping\ClassMetadata;
+//use Doctrine\ORM\QueryBuilder;
 use GeniusDesign\CommonBundle\Repository\MainRepository;
 
 /**

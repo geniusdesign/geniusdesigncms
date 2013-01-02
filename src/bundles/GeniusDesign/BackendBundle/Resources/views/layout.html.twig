@@ -31,6 +31,11 @@
         <div class="body">
             {% if app.user is not empty %}
                 <div id="status-bar-container">
+                    
+                    {% if genius_design_languages_defined() %}
+                        {{ genius_design_show_languages() }}
+                    {% endif %}
+                    
                     <div id="status-bar">
                         <div class="item">Zalogowany jako: <span class="name">{{ app.user.firstName }} {{ app.user.lastName }}</span></div>
                         {#<div class="item"><a href="{{ path('page') }}" target="_blank">Przejdź do serwisu</a></div>#}

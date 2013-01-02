@@ -1,10 +1,16 @@
 parameters:
     genius_design_upload.helper.class: GeniusDesign\CommonBundle\Helper\UploadHelper
+    genius_design_common.helper.class: GeniusDesign\CommonBundle\Helper\CommonHelper
     genius_design_common.twig.extension.class: GeniusDesign\CommonBundle\Twig\Extension\GeniusDesignCommonExtension
     
 services:
     genius_design_upload.helper:
         class: %genius_design_upload.helper.class%
+        arguments:
+            container: "@service_container"
+        shared: true
+    genius_design_common.helper:
+        class: %genius_design_common.helper.class%
         arguments:
             container: "@service_container"
         shared: true

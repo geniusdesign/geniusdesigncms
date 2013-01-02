@@ -22,6 +22,9 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->scalarNode('language_request_parameter_name')
+                    ->defaultValue('languageCode')
+                ->end()
                 ->scalarNode('deleted_files_path')
                     ->defaultValue('%kernel.root_dir%/../web/deleted_files')
                 ->end()

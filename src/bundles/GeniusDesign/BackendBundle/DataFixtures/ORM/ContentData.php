@@ -75,7 +75,7 @@ class ContentData implements FixtureInterface, OrderedFixtureInterface, Containe
      * {@inheritDoc}
      */
     public function getOrder() {
-        return 3;
+        return 15;
     }
 
 }

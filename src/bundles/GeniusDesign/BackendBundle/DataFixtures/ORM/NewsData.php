@@ -92,7 +92,7 @@ class NewsData implements FixtureInterface, OrderedFixtureInterface, ContainerAw
      * {@inheritDoc}
      */
     public function getOrder() {
-        return 2;
+        return 10;
     }
 
 }

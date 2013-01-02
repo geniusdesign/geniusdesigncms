@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="genius_contents")
  * @ORM\Entity(repositoryClass="GeniusDesign\Components\ContentBundle\Repository\ContentRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class Content {
 

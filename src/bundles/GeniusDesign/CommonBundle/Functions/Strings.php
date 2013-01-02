@@ -20,9 +20,27 @@ class Strings {
         if (!empty($string)) {
             $lastSign = substr($string, -1);
 
-            if($lastSign == $sign){
+            if ($lastSign == $sign) {
                 $result = true;
             }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns information if string contains another string
+     * 
+     * @param string $string
+     * @param string $findme
+     * @return boolean 
+     */
+    public static function contains($string, $findme) {
+        $result = true;
+        $position = strpos($string, $findme);
+
+        if ($position === false) {
+            $result = false;
         }
 
         return $result;

@@ -36,6 +36,6 @@ class AdminData implements FixtureInterface, OrderedFixtureInterface {
      * Order
      */
     public function getOrder() {
-        return 1;
+        return 5;
     }
 }
