@@ -43,7 +43,7 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post" action="{{ path('genius_content_edit', {'contentSlug': content.getTitleSlug(), 'language': language}) }}">
+    <form method="post" action="{{ path('genius_content_edit', {'contentSlug': content.getTitleSlug(), 'languageCode': languageCode}) }}">
         {{ form_widget(form.content) }}
         {{ form_widget(form._token) }}
         
@@ -53,7 +53,7 @@
             </div>
 
             <div class="link last">
-                <a href="{{ path('genius_content_list') }}">Pokaż inne &raquo;</a>
+                <a class="link cancel" href="{{ path('genius_content_list', {'languageCode': languageCode}) }}"></a>
             </div>
         </div>
     </form>

@@ -22,8 +22,8 @@ class AdminData implements FixtureInterface, OrderedFixtureInterface {
      */
     public function load(\Doctrine\Common\Persistence\ObjectManager $manager) {
         $admin = new Admin();
-        $admin->setFirstName('Administrator')
-                ->setLastName('Serwisu')
+        $admin->setFirstName('Admin')
+                ->setLastName('Gd')
                 ->setEmail('pawel@gd.pl')
                 ->setPassword(md5('genius@design!'))
                 ->setEnabled(true);

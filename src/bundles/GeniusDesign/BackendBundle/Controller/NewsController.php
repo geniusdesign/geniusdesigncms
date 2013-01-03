@@ -23,18 +23,18 @@ class NewsController extends MainController {
      */
     public function listAction() {
         $newsHelper = $this->get('genius_design_news.helper');
-        $languageCode = 'pl_PL'; //$this->getLanguageCode();
-        
+        $languageLcid = $this->getLanguageLcid();
+
         $repository = $this->getDoctrine()
                 ->getEntityManager()
                 ->getRepository('GeniusDesignComponentsNewsBundle:News')
-                ->setLanguageCode($languageCode);
+                ->setLanguageLcid($languageLcid);
 
         $news = $repository->getNews();
 
         $parameters = array(
             'news' => $news,
-            'language' => $languageCode,
+            'languageCode' => $this->getLanguageCode(),
             'dateFormat' => 'd.m.Y',
             'isImageVisible' => $newsHelper->isImageEnabled(),
             'isDateVisible' => $newsHelper->isDateEnabled()
@@ -48,8 +48,7 @@ class NewsController extends MainController {
      * @return Response
      */
     public function editAction($newsSlug) {
-        $languageCode = 'pl_PL'; //$this->getLanguageCode();
-        return $this->commonForAddAndEdit($newsSlug, $languageCode);
+        return $this->commonForAddAndEdit($newsSlug);
     }
 
     /**
@@ -57,23 +56,23 @@ class NewsController extends MainController {
      * @return Response
      */
     public function addAction() {
-        $languageCode = 'pl_PL'; //$this->getLanguageCode();
         $newsSlug = 0;
-        return $this->commonForAddAndEdit($newsSlug, $languageCode);
+        return $this->commonForAddAndEdit($newsSlug);
     }
 
     /**
      * 
      * @param int $newsSlug
-     * @param type $language
      * @return type 
      */
-    private function commonForAddAndEdit($newsSlug, $languageCode) {
+    private function commonForAddAndEdit($newsSlug) {
         $request = $this->getRequest();
         $entityManager = $this->getDoctrine()->getEntityManager();
         $newsHelper = $this->get('genius_design_news.helper');
         $news = null;
         $isAddsNews = false;
+
+        $languageLcid = $this->getLanguageLcid();
 
         if (empty($newsSlug)) {
             $newsSlug = 0;
@@ -84,7 +83,7 @@ class NewsController extends MainController {
             $isAddsNews = true;
         } else {
             $repository = $entityManager->getRepository('GeniusDesignComponentsNewsBundle:News')
-                    ->setLanguageCode($languageCode);
+                    ->setLanguageLcid($languageLcid);
             $news = $repository->getNewsBySlug($newsSlug);
         }
 
@@ -110,7 +109,7 @@ class NewsController extends MainController {
             if ($form->isValid()) {
                 $uploadHelper = $this->get('genius_design_upload.helper');
                 $news->setUploadHelper($uploadHelper)
-                        ->setLocale($languageCode);
+                        ->setTranslatableLocale($languageLcid);
 
                 $entityManager->persist($news);
                 $entityManager->flush();
@@ -128,7 +127,7 @@ class NewsController extends MainController {
         $parameters = array(
             'form' => $form->createView(),
             'news' => $news,
-            'language' => $languageCode,
+            'languageCode' => $this->getLanguageCode(),
             'isImageVisible' => $imageVisible,
             'isAddsNews' => $isAddsNews
         );
@@ -140,7 +139,6 @@ class NewsController extends MainController {
      * @return Response
      */
     public function deleteAction($newsSlug) {
-        $language = 'pl'; //$this->getLanguageCode();
         $type = 'error';
         $message = 'Nie usunąłem';
 
@@ -149,7 +147,7 @@ class NewsController extends MainController {
                     ->getEntityManager()
                     ->getRepository('GeniusDesignComponentsNewsBundle:News');
 
-            $news = $repository->getNewsBySlug($newsSlug, $language);
+            $news = $repository->getNewsBySlug($newsSlug);
 
             if (!empty($news)) {
                 $deleted = true;
@@ -161,7 +159,7 @@ class NewsController extends MainController {
                 }
 
                 if ($deleted) {
-                    $repository->deleteNewsById($news->getId(), $language);
+                    $repository->deleteNewsById($news->getId());
                     $type = 'notice';
                     $message = 'Usunąłem';
                 }
@@ -177,7 +175,6 @@ class NewsController extends MainController {
      * @return Response
      */
     public function togglePublishedAction($newsSlug) {
-        $language = 'pl'; //$this->getLanguageCode();
         $type = 'error';
         $message = 'Nie zmieniłem';
 
@@ -186,7 +183,7 @@ class NewsController extends MainController {
                     ->getEntityManager()
                     ->getRepository('GeniusDesignComponentsNewsBundle:News');
 
-            $result = $repository->tooglePublishedBySlug($newsSlug, $language);
+            $result = $repository->tooglePublishedBySlug($newsSlug);
 
             if ($result) {
                 $type = 'notice';
@@ -210,6 +207,7 @@ class NewsController extends MainController {
             $route = 'genius_news_list';
         }
 
+        $parameters = array_merge($parameters, array('languageCode' => $this->getLanguageCode()));
         return parent::redirectTo($route, $parameters);
     }
 

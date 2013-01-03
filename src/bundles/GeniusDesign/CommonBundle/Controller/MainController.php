@@ -32,8 +32,16 @@ abstract class MainController extends Controller implements EventfulControllerIn
      * Returns the language code from request or from database
      * @return string
      */
-    public function getLanguageCode() {
-        return $this->get('genius_design_language.helper')->getLanguageCode();
+    public function getLanguageCode($force = true) {
+        return $this->get('genius_design_language.helper')->getLanguageCode($force);
+    }
+
+    /**
+     * Returns the language LCID from request or from database
+     * @return string
+     */
+    public function getLanguageLcid($force = true) {
+        return $this->get('genius_design_language.helper')->getLanguageLcid($force);
     }
     
     /**

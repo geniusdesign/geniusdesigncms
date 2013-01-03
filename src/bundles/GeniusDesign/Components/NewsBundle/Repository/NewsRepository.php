@@ -2,8 +2,6 @@
 
 namespace GeniusDesign\Components\NewsBundle\Repository;
 
-//use Doctrine\ORM\Mapping\ClassMetadata;
-//use Doctrine\ORM\QueryBuilder;
 use GeniusDesign\CommonBundle\Repository\MainRepository;
 
 /**
@@ -17,7 +15,6 @@ class NewsRepository extends MainRepository {
     /**
      * Returns all news
      * 
-     * @param [string $language = ''] The language title short
      * @param [integer $limit = null] Maximum amount of items
      * @param [integer $offset = null] The start position, offset
      * @return array

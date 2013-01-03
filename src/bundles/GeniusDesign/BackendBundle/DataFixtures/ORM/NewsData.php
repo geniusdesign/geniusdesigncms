@@ -46,9 +46,14 @@ class NewsData implements FixtureInterface, OrderedFixtureInterface, ContainerAw
      */
     public function load(\Doctrine\Common\Persistence\ObjectManager $manager) {
         $maxNewsCount = 4;
-        $languages = array(
-            'pl_PL', 'en_US', 'de_DE'
-        );
+
+        $languages = $this->getContainer()
+                ->get('session')
+                ->get('languagesData');
+
+        $languagesDefined = $this->getContainer()
+                ->get('genius_design_language.helper')
+                ->areLanguagesDefined();
 
         $today = new \DateTime();
 
@@ -76,14 +81,19 @@ class NewsData implements FixtureInterface, OrderedFixtureInterface, ContainerAw
             $manager->persist($news);
             $manager->flush();
 
-            foreach ($languages as $language) {
-                $news->setTitle($title . ' - ' . $language)
-                        ->setEntrance($entrance . ' - ' . $language)
-                        ->setContent($content . ' - ' . $language)
-                        ->setTranslatableLocale($language);
+            if (!empty($languages) && $languagesDefined) {
+                foreach ($languages as $language) {
+                    $languageLcid = $language->getLanguageLcid();
+                    $languageTitle = $language->getTitle();
 
-                $manager->persist($news);
-                $manager->flush();
+                    $news->setTranslatableLocale($languageLcid)
+                            ->setTitle($title . ' - ' . $languageTitle)
+                            ->setEntrance($entrance . ' - ' . $languageTitle)
+                            ->setContent($content . ' - ' . $languageTitle);
+
+                    $manager->persist($news);
+                    $manager->flush();
+                }
             }
         }
     }

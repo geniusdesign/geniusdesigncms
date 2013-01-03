@@ -31,15 +31,10 @@
         <div class="body">
             {% if app.user is not empty %}
                 <div id="status-bar-container">
-                    
-                    {% if genius_design_languages_defined() %}
-                        {{ genius_design_show_languages() }}
-                    {% endif %}
-                    
                     <div id="status-bar">
+                        <div class="item last"><a href="{{ path('genius_logout') }}" class="logout">Wyloguj się</a></div>
                         <div class="item">Zalogowany jako: <span class="name">{{ app.user.firstName }} {{ app.user.lastName }}</span></div>
                         {#<div class="item"><a href="{{ path('page') }}" target="_blank">Przejdź do serwisu</a></div>#}
-                        <div class="item last"><a href="{{ path('genius_logout') }}" class="logout">Wyloguj się</a></div>
                     </div>
                 </div>
             {% endif %}
@@ -49,9 +44,17 @@
                 {% if app.user is not empty %}
                     <div class="menu">Menu: 
                         <ul>
-                            <li><a href="{{ path('genius_news_list') }}" class="">Aktualności</a></li>
-                            <li><a href="{{ path('genius_content_list') }}" class="">Treści</a></li>
+                            {% set parameters = {'languageCode': genius_design_current_language_code()} %}
+                            
+                            <li><a href="{{ path('genius_news_list', parameters) }}" class="">Aktualności</a></li>
+                            <li><a href="{{ path('genius_content_list', parameters) }}" class="">Treści</a></li>
                         </ul>
+                        
+                        <hr />
+                            
+                        {% if genius_design_languages_defined() %}
+                            {{ genius_design_show_languages() }}
+                        {% endif %}
                     </div>
                 {% endif %}
                 <div class="content">

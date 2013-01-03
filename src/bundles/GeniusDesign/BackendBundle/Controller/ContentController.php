@@ -21,65 +21,68 @@ class ContentController extends MainController {
      * @return Response
      */
     public function listAction() {
-        $language = 'pl'; //$this->getLanguageCode();
+        $languageLcid = $this->getLanguageLcid();
         $repository = $this->getDoctrine()
                 ->getEntityManager()
-                ->getRepository('GeniusDesignComponentsContentBundle:Content');
+                ->getRepository('GeniusDesignComponentsContentBundle:Content')
+                ->setLanguageLcid($languageLcid);
 
-        $contents = $repository->getContents($language);
-       
+        $contents = $repository->getContents();
+
         /*
          * Displaying the template
          */
         $parameters = array(
             'contents' => $contents,
-            'language' => $language
+            'languageCode' => $this->getLanguageCode()
         );
-        
+
         return $this->render('GeniusDesignBackendBundle:Content:list.html.twig', $parameters);
     }
-    
+
     /**
      * Display content list
      * @return Response
      */
     public function editAction($contentSlug) {
-        $language = 'pl'; //$this->getLanguageCode();
+        $languageLcid = $this->getLanguageLcid();
         $request = $this->getRequest();
+        
         $entityManager = $this->getDoctrine()->getEntityManager();
+        $repository = $entityManager->getRepository('GeniusDesignComponentsContentBundle:Content')
+                ->setLanguageLcid($languageLcid);
 
-        $repository = $entityManager->getRepository('GeniusDesignComponentsContentBundle:Content');
-
-        $content = $repository->getContentBySlug($contentSlug, $language);
+        $content = $repository->getContentBySlug($contentSlug);
 
         if ($content === null) {
             return $this->redirectTo();
         }
 
         $form = $this->createForm(new ContentType(), $content);
-        
+
         if (strtolower($request->getMethod()) == 'post') {
             $form->bindRequest($request);
 
             if ($form->isValid()) {
-
+                $content->setTranslatableLocale($languageLcid);
+                
                 $entityManager->persist($content);
                 $entityManager->flush();
 
                 $this->addFlashMessage('notice', 'Zapisałem');
                 return $this->redirectTo();
             }
-            
+
             $this->addFlashMessage('error', 'Nie zapisałem');
         }
-        
+
         /*
          * Displaying the template
          */
         $parameters = array(
             'form' => $form->createView(),
             'content' => $content,
-            'language' => $language
+            'languageCode' => $this->getLanguageCode()
         );
         return $this->render('GeniusDesignBackendBundle:Content:edit.html.twig', $parameters);
     }
@@ -96,7 +99,8 @@ class ContentController extends MainController {
             $route = 'genius_content_list';
         }
 
+        $parameters = array_merge($parameters, array('languageCode' => $this->getLanguageCode()));
         return parent::redirectTo($route, $parameters);
     }
-    
+
 }

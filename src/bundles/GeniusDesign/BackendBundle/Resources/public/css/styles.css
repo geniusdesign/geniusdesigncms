@@ -53,16 +53,17 @@ a,
 
 /* -------- div status ----------*/
 
-.status-bar-container{
+#status-bar-container{
     height: 25px;
 }
-.status-bar .item,
-.status-bar .item-last{
+#status-bar-container #status-bar{
     float: right;
-    line-height: 25px;
     width: auto;
 }
-
+#status-bar-container #status-bar .item{
+    float: right;
+    padding: 5px 0 5px 15px;
+}
 /* -------- div header ----------*/
 
 .header{
@@ -196,4 +197,8 @@ a,
     background: #afafaf;
     padding: 5px;
     text-align: left;
+}
+
+#languages-buttons li.current{
+    font-weight: bold;
 }

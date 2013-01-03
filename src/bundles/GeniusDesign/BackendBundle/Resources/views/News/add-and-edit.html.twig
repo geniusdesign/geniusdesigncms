@@ -1,7 +1,7 @@
 {% extends 'GeniusDesignBackendBundle::layout.html.twig' %}
 
 {% block content %}
-    {% set parameters = {'language': language} %}
+    {% set parameters = {'languageCode': languageCode} %}
     {% set routeName = 'genius_news_add' %}
 
     {% if not isAddsNews %}
@@ -22,7 +22,7 @@
             </div>
 
             <div class="">
-                <a class="link cancel" href="{{ path('genius_news_list') }}">Anuluj</a>
+                <a class="link cancel" href="{{ path('genius_news_list', {'languageCode': languageCode}) }}">Anuluj</a>
             </div>
         </div>
     </form>

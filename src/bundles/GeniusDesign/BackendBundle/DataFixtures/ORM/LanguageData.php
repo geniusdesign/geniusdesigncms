@@ -45,7 +45,7 @@ class LanguageData implements FixtureInterface, OrderedFixtureInterface, Contain
      * @return void
      */
     public function load(\Doctrine\Common\Persistence\ObjectManager $manager) {
-        $defaultLanguage = 'pl_PL';
+        $defaultLanguage = 'de_DE';
 
         $languagesData = array(
             'pl_PL' => 'Polski',

@@ -45,7 +45,8 @@ class GeniusDesignLanguageExtension extends \Twig_Extension {
         return array(
             'genius_design_languages' => new \Twig_Function_Method($this, 'getLanguages'),
             'genius_design_show_languages' => new \Twig_Function_Method($this, 'showLanguages', array('is_safe' => array('html'))),
-            'genius_design_languages_defined' => new \Twig_Function_Method($this, 'areLanguagesDefined')
+            'genius_design_languages_defined' => new \Twig_Function_Method($this, 'areLanguagesDefined'),
+            'genius_design_current_language_code' => new \Twig_Function_Method($this, 'getCurrentLanguageCode')
         );
     }
 
@@ -67,14 +68,14 @@ class GeniusDesignLanguageExtension extends \Twig_Extension {
                         ->getRepository('GeniusDesignComponentsLanguageBundle:Language')
                         ->getRows();
     }
-    
+
     /**
      * Shows the languages
      * 
      * @param [string $viewName = ''] The name of view which displays the languages as flags, tabs etc.  
      * @return string
      */
-    
+
     /**
      * Shows the languages
      * 
@@ -96,7 +97,7 @@ class GeniusDesignLanguageExtension extends \Twig_Extension {
         $languageParameterName = $this->getContainer()
                 ->get('genius_design_language.helper')
                 ->getLanguageRequestParameterName();
-        
+
         $currentLanguageCode = $this->getContainer()
                 ->get('request')
                 ->get($languageParameterName);
@@ -123,7 +124,7 @@ class GeniusDesignLanguageExtension extends \Twig_Extension {
                         ->get('templating')
                         ->render($viewName, $parameters);
     }
-    
+
     /**
      * Returns information if languages are defined
      * @return boolean
@@ -132,6 +133,16 @@ class GeniusDesignLanguageExtension extends \Twig_Extension {
         return $this->getContainer()
                         ->get('genius_design_language.helper')
                         ->areLanguagesDefined();
+    }
+
+    /**
+     * Returns current language code
+     * @return boolean
+     */
+    public function getCurrentLanguageCode($force = true) {
+        return $this->getContainer()
+                        ->get('genius_design_language.helper')
+                        ->getLanguageCode($force);
     }
 
 }

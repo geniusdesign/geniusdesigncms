@@ -46,27 +46,44 @@ class ContentData implements FixtureInterface, OrderedFixtureInterface, Containe
      */
     public function load(\Doctrine\Common\Persistence\ObjectManager $manager) {
         $maxContentCount = 3;
-        $languages = array(
-            'pl', 'en'
-        );
+
+        $languages = $this->getContainer()
+                ->get('session')
+                ->get('languagesData');
+
+        $languagesDefined = $this->getContainer()
+                ->get('genius_design_language.helper')
+                ->areLanguagesDefined();
 
         $titleTemplate = 'Content-%s';
         $contentTemplate = 'Treść - %s';
 
-        foreach ($languages as $language){
-            for ($i = 1; $i <= $maxContentCount; $i++) {
-                $title = sprintf($titleTemplate, $i);
-                $titleLowered = mb_strtolower($title, 'UTF-8');
-                $content = sprintf($contentTemplate, $titleLowered);
+        for ($i = 1; $i <= $maxContentCount; $i++) {
+            $title = sprintf($titleTemplate, $i);
+            $titleLowered = mb_strtolower($title, 'UTF-8');
+            $content = sprintf($contentTemplate, $titleLowered);
 
-                $contentObject = new Content();
-                $contentObject->setTitle($title)
-                        ->setContent($content)
-                        ->setAutor('nobody')
-                        ->setLanguage($language);
+            $contentObject = new Content();
+            $contentObject->setTitle($title)
+                    ->setContent($content)
+                    ->setAutor('nobody noname');
 
-                $manager->persist($contentObject);
-                $manager->flush();
+            $manager->persist($contentObject);
+            $manager->flush();
+
+            if (!empty($languages) && $languagesDefined) {
+                foreach ($languages as $language) {
+                    $languageLcid = $language->getLanguageLcid();
+                    $languageCode = $language->getLanguageCode();
+
+                    $contentObject->setTitle($title . ' - ' . $languageCode)
+                            ->setContent($content . ' - ' . $languageCode)
+                            ->setAutor($content . ' - ' . $languageCode)
+                            ->setTranslatableLocale($languageLcid);
+
+                    $manager->persist($contentObject);
+                    $manager->flush();
+                }
             }
         }
     }

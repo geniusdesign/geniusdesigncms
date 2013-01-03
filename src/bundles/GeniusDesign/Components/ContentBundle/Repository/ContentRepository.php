@@ -2,9 +2,7 @@
 
 namespace GeniusDesign\Components\ContentBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\QueryBuilder;
+use GeniusDesign\CommonBundle\Repository\MainRepository;
 
 /**
  * Repository class for content
@@ -12,40 +10,36 @@ use Doctrine\ORM\QueryBuilder;
  * @author Paweł Cichoń <cichonpawelhd@gmail.com>
  * @copyright GeniusDesign
  */
-class ContentRepository extends EntityRepository {
+class ContentRepository extends MainRepository {
 
     /**
      * Returns all content
      * 
-     * @param [string $language = ''] The language title short
      * @param [integer $limit = null] Maximum amount of items
      * @param [integer $offset = null] The start position, offset
      * @return array
      */
-    public function getContents($language = '', $limit = null, $offset = null) {
+    public function getContents($limit = null, $offset = null) {
         $criteria = array(
-            'language' => $language,
             'deleted_at' => null
         );
 
         $orderBy = array('title' => 'asc');
-        return $this->findBy($criteria, $orderBy, $limit, $offset);
+        return $this->getEffect($criteria, $orderBy, $limit, $offset, true);
     }
     
     /**
      * Returns content by given title slug
      * 
      * @param string $contentSlug The content slug
-     * @param [string $language = ''] The language title short
      * @return array
      */
-    public function getContentBySlug($contentSlug, $language = '') {
+    public function getContentBySlug($contentSlug) {
         $criteria = array(
             'title_slug' => $contentSlug,
-            'language' => $language,
             'deleted_at' => null
         );
 
-        return $this->findOneBy($criteria);
+        return $this->getEffect($criteria, array(), 0, 0, false);
     }
 }

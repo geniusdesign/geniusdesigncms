@@ -5,6 +5,7 @@ namespace GeniusDesign\Components\ContentBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Translatable\Translatable;
 
 /**
  * GeniusDesign\Components\ContentBundle\Entity\Content
@@ -12,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="genius_contents")
  * @ORM\Entity(repositoryClass="GeniusDesign\Components\ContentBundle\Repository\ContentRepository")
  */
-class Content {
+class Content implements Translatable  {
 
     /**
      * @var integer $id
@@ -27,6 +28,7 @@ class Content {
      * @var string $title
      *
      * @ORM\Column(name="title", type="string", length=100)
+     * @Gedmo\Translatable
      */
     private $title;
 
@@ -35,6 +37,7 @@ class Content {
      *
      * @ORM\Column(name="title_slug", type="string", length=100)
      * @Gedmo\Slug(fields={"title"})
+     * @Gedmo\Translatable
      */
     private $title_slug;
 
@@ -42,6 +45,7 @@ class Content {
      * @var text $content
      *
      * @ORM\Column(name="content", type="text", nullable=true)
+     * @Gedmo\Translatable
      */
     private $content;
     
@@ -51,12 +55,6 @@ class Content {
      * @ORM\Column(name="autor", type="string", nullable=true)
      */
     private $autor;
-
-    /**
-     * @var text $language
-     * @ORM\Column(name="language", type="string", length=5)
-     */
-    private $language;
 
     /**
      * @var datetime $created_at
@@ -80,6 +78,13 @@ class Content {
      * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
      */
     private $deleted_at;
+
+    /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
 
     /**
      * Get id
@@ -234,18 +239,19 @@ class Content {
      * Sets localization code
      * 
      * @param string $language The language string, language code
-     * @return \GeniusDesign\Components\ContentBundle\Entity\Content
+     * @return \GeniusDesign\Components\NewsBundle\Entity\News
      */
-    public function setLanguage($language) {
-        $this->language = $language;
+    public function setTranslatableLocale($locale) {
+        $this->locale = $locale;
         return $this;
     }
-    
+
     /**
      * Get localization code
      * @return string 
      */
-    public function getLanguage() {
-        return $this->language;
+    public function getTranslatableLocale() {
+        return $this->locale;
     }
+
 }

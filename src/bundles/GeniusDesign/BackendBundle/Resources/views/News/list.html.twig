@@ -3,16 +3,14 @@
 {#% block pageTitle %}
     Aktualności
 {% endblock %#}
-    
 
-    
 {% block javascripts %}
     {{ parent() }}
 {% endblock %}    
 
 {% block content %}
     <div class="options-box">
-        <a class="link add" href="{{ path('genius_news_add', {'language': language}) }}" class="">Dodaj aktualność</a>
+        <a class="link add" href="{{ path('genius_news_add', {'languageCode': languageCode}) }}" class="">Dodaj aktualność</a>
     </div>
 
     <table id="news-list" class="centered list">
@@ -31,7 +29,7 @@
             {% if news is not empty %}
                 {% for index, item in news %}
                     {% set newsSlug = item.getTitleSlug() %}
-                    {% set url = path('genius_news_edit', {'newsSlug': newsSlug, 'language': language}) %}
+                    {% set url = path('genius_news_edit', {'newsSlug': newsSlug, 'languageCode': languageCode}) %}
 
                     {% set fileName = item.getImageFileName() %}
                     {% set title = item.getTitle() %}
@@ -58,7 +56,7 @@
                             </td>
                         {% endif %}
                         <td class="">
-                            {% set toogle = path('genius_news_toggle_published', {'newsSlug': newsSlug, 'language': language}) %}
+                            {% set toogle = path('genius_news_toggle_published', {'newsSlug': newsSlug, 'languageCode': languageCode}) %}
                             {% set toogleText = 'NIE' %}
 
                             {% if item.getPublished() %}
@@ -68,7 +66,7 @@
                             <a href="{{ toogle }}" class="link toggle">{{ toogleText }}</a>
                         </td>
                         <td class="">
-                            <a class="link delete confirm" href="{{ path('genius_news_delete', {'newsSlug': newsSlug, 'language': language}) }}">Usuń</a>
+                            <a class="link delete confirm" href="{{ path('genius_news_delete', {'newsSlug': newsSlug, 'languageCode': languageCode}) }}">Usuń</a>
                             <a href="{{ url }}" class="link edit">Edytuj</a>
                         </td>
                     </tr>

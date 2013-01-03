@@ -24,6 +24,12 @@ class MainRepository extends EntityRepository {
      * @var string
      */
     private $languageCode = '';
+    
+    /**
+     * The language lcid used by locale
+     * @var string
+     */
+    private $languageLcid = '';
 
     /**
      * If is set to true, translations of the default language are used when there is no translations for current language. Otherwise - not.
@@ -78,6 +84,25 @@ class MainRepository extends EntityRepository {
     }
 
     /**
+     * Sets the language lcid code
+     * 
+     * @param string $languageLcid The language lcid code
+     * @return \GeniusDesign\CommonBundle\Repository\MainRepository
+     */
+    public function setLanguageLcid($languageLcid) {
+        $this->languageLcid = $languageLcid;
+        return $this;
+    }
+
+    /**
+     * Returns the language lcid code
+     * @return string
+     */
+    public function getLanguageLcid() {
+        return $this->languageLcid;
+    }
+    
+    /**
      * Returns data for given parameters.
      * It may be array or single result.
      * It may also return the query only.
@@ -102,6 +127,7 @@ class MainRepository extends EntityRepository {
      * @return \Doctrine\ORM\Query | array | object
      */
     public function getEffect(array $criteria = array(), array $orderBy = array(), $limit = 0, $offset = 0, $manyResults = true, $returnQueryOnly = false) {
+
         /*
          * Getting the query builder
          */
@@ -154,11 +180,11 @@ class MainRepository extends EntityRepository {
      * @return \Doctrine\ORM\Query $query
      */
     public function setTranslationHints(\Doctrine\ORM\Query $query) {
-        $languageCode = $this->getLanguageCode();
+        $languageLcid = $this->getLanguageLcid();
 
-        if (!empty($languageCode)) {
+        if (!empty($languageLcid)) {
             $query->setHint(\Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker')
-                    ->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, $languageCode)
+                    ->setHint(\Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, $languageLcid)
                     ->setHint(\Gedmo\Translatable\TranslatableListener::HINT_FALLBACK, (int) $this->areTranslationsFallbackUsed());
         }
 

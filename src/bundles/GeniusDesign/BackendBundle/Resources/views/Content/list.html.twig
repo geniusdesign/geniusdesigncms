@@ -1,9 +1,5 @@
 {% extends 'GeniusDesignBackendBundle::layout.html.twig' %}
 
-{#% block pageTitle %}
-    Treści
-{% endblock %#}
-
 {% block javascripts %}
     {{ parent() }}
 {% endblock %}    
@@ -19,7 +15,7 @@
         {% if contents is not empty %}
             {% for index, item in contents %}
                 {% set contentSlug = item.getTitleSlug() %}
-                {% set url = path('genius_content_edit', {'contentSlug': contentSlug, 'language': language}) %}
+                {% set url = path('genius_content_edit', {'contentSlug': contentSlug, 'languageCode': languageCode}) %}
 
                 {% set title = item.getTitle() %}
 

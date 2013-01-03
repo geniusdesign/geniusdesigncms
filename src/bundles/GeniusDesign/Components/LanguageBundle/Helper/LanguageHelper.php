@@ -73,10 +73,12 @@ class LanguageHelper {
 
     /**
      * Returns informations if languages exists by given language code
-     * @return string 
+     * 
+     * @param string $languageCode
+     * @return boolean 
      */
-    public function isLanguageExists($languageCode = '') {
-        $result = '';
+    public function isLanguageExists($languageCode) {
+        $result = false;
 
         if (!empty($languageCode)) {
             $languages = $this->getContainer()
@@ -85,7 +87,7 @@ class LanguageHelper {
                     ->getLanguageByCode($languageCode);
 
             if (!empty($languages)) {
-                $result = $languageCode;
+                $result = true;
             }
         }
 
@@ -113,6 +115,28 @@ class LanguageHelper {
     }
 
     /**
+     * Returns LCID code of language from request (e.g. pl_PL)
+     * 
+     * @param [boolean $force = true] If is set to true and short name of language was not found in request, short name of default language is returned. Otherwise - not.
+     * @return boolean
+     */
+    public function getLanguageLcid($force = true) {
+        $languageLcid = '';
+        $container = $this->getContainer();
+        $languageCode = $this->getLanguageCode($force);
+
+        $language = $container->get('doctrine')
+                ->getRepository('GeniusDesignComponentsLanguageBundle:Language')
+                ->getLanguageByCode($languageCode);
+
+        if (!empty($language)) {
+            $languageLcid = $language->getLanguageLcid();
+        }
+
+        return $languageLcid;
+    }
+
+    /**
      * Returns code of language from request
      * 
      * @param [boolean $force = true] If is set to true and short name of language was not found in request, short name of default language is returned. Otherwise - not.
@@ -122,6 +146,12 @@ class LanguageHelper {
         $languageCode = $this->getContainer()
                 ->get('request')
                 ->get($this->getLanguageRequestParameterName());
+
+        $checkLanguage = $this->isLanguageExists($languageCode);
+
+        if (!empty($languageCode) && empty($checkLanguage)) {
+            $languageCode = $this->getDefaultLanguageCode();
+        }
 
         if ($force && empty($languageCode)) {
             $languageCode = $this->getDefaultLanguageCode();
