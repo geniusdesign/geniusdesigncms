@@ -28,8 +28,8 @@ p{
 }
 
 ul{
-    list-style-type: none;
-    /*list-style: disc;*/
+    /*list-style-type: none;
+    list-style: disc;*/
     padding-left: 20px;
 }
 
@@ -97,6 +97,9 @@ a,
     min-height: 300px;
     margin: 0 0 10px 0;
     width: 200px;
+}
+.main .menu li{
+    list-style-type: none;
 }
 .main .content{
     float: left;
@@ -200,5 +203,9 @@ a,
 }
 
 #languages-buttons li.current{
+    font-weight: bold;
+}
+
+.menu-left-bar li.current{
     font-weight: bold;
 }

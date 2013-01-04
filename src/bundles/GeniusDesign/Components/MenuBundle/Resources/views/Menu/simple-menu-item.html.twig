@@ -1,0 +1,27 @@
+{% set classCssInside = item.title %}
+{% set currentRoute = app.request.attributes.get('_route') %}
+
+{% if currentRoute == item.routeName %}
+    {% set classCssInside = classCssInside ~ ' clicked current active' %}
+{% endif %}
+
+<{{ renderTagInside | raw }} class="{{ classCssInside | raw }}">
+
+    {% set title = item.title %}
+    {% set url = item.url %}
+    {% set externalUrl = true %}
+    {% set route = item.routeName %}
+    {% set parameters = item.parameters %}
+
+    {% if url is empty %}
+        {% set url = path(route, parameters) %}
+        {% set externalUrl = false %}
+    {% endif %}
+
+    <a href="{{ url }}" title="{{ title }}" class="{{ classCssInside }}"{% if externalUrl %} target="_blank"{% endif %}>
+        {% if displayTitles %}
+            {{ title }}
+        {% endif %}
+    </a>
+
+</{{ renderTagInside | raw }}">

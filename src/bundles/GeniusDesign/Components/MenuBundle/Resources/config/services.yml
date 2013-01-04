@@ -1,0 +1,11 @@
+parameters:
+    genius_design_menu.twig.extension.class: GeniusDesign\Components\MenuBundle\Twig\Extension\GeniusDesignComponentsMenuExtension
+    
+services:
+    genius_design_menu.twig.extension:
+        class: %genius_design_menu.twig.extension.class%
+        arguments:
+            container: "@service_container"
+        shared: true
+        tags:
+            - {name: twig.extension}

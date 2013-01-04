@@ -1,0 +1,22 @@
+{% if menuItems is not empty %}
+        {% set renderTagOutside = 'div' %}
+        {% set renderTagInside = 'div' %}
+
+        {% if displayAsUl %}
+            {% set renderTagOutside = 'ul' %}
+            {% set renderTagInside = 'li' %}
+        {% endif %}
+
+    <{{ renderTagOutside | raw }} class="{{ classCss | raw }}">
+        {% for index, item in menuItems %}
+            {% include 'GeniusDesignComponentsMenuBundle:Menu:%s-item.html.twig' | format(templateMenu) %}
+
+            {% if separator is not empty %}
+                {% if index < menuItems | length %}
+                    {{ separator | raw }}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+
+    </{{ renderTagOutside | raw }}>
+{% endif %}
