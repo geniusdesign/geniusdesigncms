@@ -42,7 +42,7 @@
                             <td class="">
                                 {% if item.getImageFileName() is not empty %}
                                     <a href="{{ url }}">
-                                        <img style="max-width: 30px; max-height: 20px;" src="{{ genius_design_file_path('genius_design_components_news', item.getImageFileName(), 'small', true, true) }}" />
+                                        <img src="{{ genius_design_file_path('genius_design_components_news', item.getImageFileName(), 'tiny', true, true, true, 'small') }}" />
                                     </a>
                                 {% endif %}
                             </td>

@@ -41,6 +41,7 @@ class GeniusDesignCommonExtension extends \Twig_Extension {
         return array(
             'genius_design_file_path' => new \Twig_Function_Method($this, 'getPathToFile'),
             'datapickerFormat' =>  new \Twig_Function_Method($this, 'getDatapickerFormat'),
+            'genius_design_no_picture' => new \Twig_Function_Method($this, 'getNoPicture')
         );
     }
 
@@ -57,9 +58,19 @@ class GeniusDesignCommonExtension extends \Twig_Extension {
      * 
      * @return string
      */
-    public function getPathToFile($entityConfigName, $fileName, $size, $withPathBase = true, $relative = false) {
+    public function getPathToFile($entityConfigName, $fileName, $size, $withPathBase = true, $relative = false, $insertNoPicture = false, $noPictureSize = 'small') {
         $helper = $this->getContainer()->get('genius_design_upload.helper');
-        return $helper->getFilePath($entityConfigName, $fileName, $size, $withPathBase, $relative);
+        return $helper->getFilePath($entityConfigName, $fileName, $size, $withPathBase, $relative, $insertNoPicture, $noPictureSize);
+    }
+
+    /**
+     * Returns path for the no picture
+     * 
+     * @return string
+     */
+    public function getNoPicture($noPictureSize = 'small') {
+        $helper = $this->getContainer()->get('genius_design_upload.helper');
+        return $helper->getNoPicturePath($noPictureSize);
     }
     
     /**

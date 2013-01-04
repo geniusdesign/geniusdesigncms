@@ -84,25 +84,23 @@ class UploadHelper {
             $imageRealPath = $uploadedFile->getRealPath();
 
             if (!empty($sizes)) {
-                //$dimensions = $this->getImageDimensions($imageRealPath);
-
-                $originalWidth = 0; //$dimensions->getWidth();
-                $originalHeight = 0; //$dimensions->getHeight();
-
                 $imagine = null;
                 $image = null;
 
                 try {
-                    /*
-                      $imagine = new \Imagine\Imagick\Imagine();
-                      //$imagine = new \Imagine\Gd\Imagine();
-                      $image = $imagine->open($imageRealPath);
-                     */
+                    $imagine = new \Imagine\Gd\Imagine();
+                    $image = $imagine->open($imageRealPath);
+
+                    $originalSize = $image->getSize();
+                    $originalWidth = $originalSize->getWidth();
+                    $originalHeight = $originalSize->getHeight();
                 } catch (RuntimeException $exception) {
                     
                 }
 
-                //$imagemagickConvertPath = $this->getContainer()->getParameter('.imagemagick.convert_path');
+                if ($originalWidth === 0 || $originalHeight === 0) {
+                    list($originalWidth, $originalHeight) = getimagesize($imageRealPath);
+                }
 
                 foreach ($sizes as $size) {
                     if (is_array($size) && count($size) == 2) {
@@ -119,17 +117,13 @@ class UploadHelper {
                         $thumbnailFullPath = $pathBase . $thumbnailPath;
 
                         if ($originalHeight > $height || $originalWidth > $width) {
-                            /*
-                              if ($image === null) {
-                              $size = Size::fromArray($size)->toString();
+                            if ($image !== null) {
 
-                              $command = sprintf('%s %s -resize %s %s', $imagemagickConvertPath, $imageRealPath, $size, $thumbnailFullPath); // e.g. /usr/local/bin/convert original-image.jpg -resize 200x100 new-image.jpg
-                              system($command);
-                              } else {
-                              $thumbnail = $image->thumbnail(new \Imagine\Image\Box($width, $height));
-                              $thumbnail->save($thumbnailFullPath);
-                              unset($thumbnail);
-                              } */
+                                $imageDimension = $this->prepareImageDimension($originalWidth, $originalHeight, $width, $height);
+                                $thumbnail = $image->thumbnail(new \Imagine\Image\Box($imageDimension[0], $imageDimension[1]));
+                                $thumbnail->save($thumbnailFullPath);
+                                unset($thumbnail);
+                            }
                         } else {
                             if ($image === null) {
                                 copy($imageRealPath, $thumbnailFullPath);
@@ -147,6 +141,38 @@ class UploadHelper {
             $directoryPath = $this->getDirectoryPath();
             $uploadedFile->move($pathBase . $directoryPath, $fileName);
         }
+    }
+
+    /**
+     * Returns image dimension
+     *
+     * @param integer $originalWidth
+     * @param integer $originalHeight
+     * @param integer $intentionalWidth
+     * @param integer $intentionalHeight
+     * @return array 
+     */
+    public function prepareImageDimension($originalWidth, $originalHeight, $intentionalWidth, $intentionalHeight) {
+        $ratio = 1;
+
+        if ($originalWidth > 0 && $originalHeight > 0) {
+            if ($originalWidth > $intentionalWidth && $originalHeight < $intentionalHeight) {
+                $ratio = $intentionalWidth / $originalWidth;
+            } elseif ($originalWidth < $intentionalWidth && $originalHeight > $intentionalHeight) {
+                $ratio = $intentionalHeight / $originalHeight;
+            } elseif ($originalWidth > $intentionalWidth && $originalHeight > $intentionalHeight) {
+                $ratio = $intentionalWidth / $originalWidth;
+
+                if ($originalHeight * $ratio > $intentionalHeight) {
+                    $ratio = $intentionalHeight / $originalHeight;
+                }
+            }
+        }
+
+        $newWidth = (int) ceil($originalWidth * $ratio);
+        $newHeight = (int) ceil($originalHeight * $ratio);
+
+        return array($newWidth, $newHeight);
     }
 
     /**
@@ -375,9 +401,10 @@ class UploadHelper {
      * @param type $fileName
      * @param type $size
      * @param type $withPathBase
+     * @param type $insertNoPicture
      * @return type 
      */
-    public function getFilePath($entityConfigName, $fileName, $size, $withPathBase = true, $relative = false) {
+    public function getFilePath($entityConfigName, $fileName, $size, $withPathBase = true, $relative = false, $insertNoPicture = false, $noPictureSize = 'small') {
         $pathBase = '';
 
         $width = 0;
@@ -398,7 +425,41 @@ class UploadHelper {
             }
         }
 
-        return $pathBase . $this->getPath($fileName, $width, $height);
+        $filePath = $this->getPath($fileName, $width, $height);
+        $fullFilePath = $pathBase . $filePath;
+
+        if ($insertNoPicture) {
+            $checkPath = $this->getPathBase($entityConfigName, false) . $filePath;
+            $fileExists = file_exists($checkPath);
+
+            if (!$fileExists) {
+                return $this->getNoPicturePath($noPictureSize);
+            }
+        }
+
+        return $fullFilePath;
+    }
+
+    /**
+     * Returns no picture path
+     * 
+     * @param string $noPictureSize
+     * @return string 
+     */
+    public function getNoPicturePath($noPictureSize) {
+        $noPicturePath = '';
+
+        if (!empty($noPictureSize)) {
+            $commonHelper = $this->getContainer()->get('genius_design_common.helper');
+            $sizes = $commonHelper->getNoPictureSizes();
+            $template = $commonHelper->getNoPictureTemplatePath();
+
+            if (in_array($noPictureSize, $sizes) && !empty($template)) {
+                $noPicturePath = sprintf($template, $noPictureSize);
+            }
+        }
+
+        return $noPicturePath;
     }
 
 }

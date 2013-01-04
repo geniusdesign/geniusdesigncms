@@ -45,8 +45,25 @@ class LanguageData implements FixtureInterface, OrderedFixtureInterface, Contain
      * @return void
      */
     public function load(\Doctrine\Common\Persistence\ObjectManager $manager) {
-        $defaultLanguage = 'de_DE';
+        $defaultLanguage = 'pl_PL';
 
+        
+        /*
+         * Setting the default language / locale, because without this translations
+         * in the default locale set in translatable listener will be also added to database.
+         */
+        $this->getContainer()
+                ->get('gedmo.listener.translatable')
+                ->setDefaultLocale($defaultLanguage);
+
+        /*
+         * For the default language / locale translation should be also added.
+         * Otherwise lately edited item will be returned for the default language / locale.
+         */
+        $this->getContainer()
+                ->get('gedmo.listener.translatable')
+                ->setPersistDefaultLocaleTranslation(true);        
+        
         $languagesData = array(
             'pl_PL' => 'Polski',
             'en_GB' => 'Angielski',
@@ -83,21 +100,6 @@ class LanguageData implements FixtureInterface, OrderedFixtureInterface, Contain
                 ->get('session')
                 ->set('languagesData', $languages);
 
-        /*
-         * Setting the default language / locale, because without this translations
-         * in the default locale set in translatable listener will be also added to database.
-         */
-        $this->getContainer()
-                ->get('gedmo.listener.translatable')
-                ->setDefaultLocale($defaultLanguage);
-
-        /*
-         * For the default language / locale translation should be also added.
-         * Otherwise lately edited item will be returned for the default language / locale.
-         */
-        $this->getContainer()
-                ->get('gedmo.listener.translatable')
-                ->setPersistDefaultLocaleTranslation(true);
     }
 
     /**

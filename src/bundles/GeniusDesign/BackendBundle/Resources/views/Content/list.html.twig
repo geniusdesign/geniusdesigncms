@@ -27,13 +27,14 @@
                         <a href="{{ url }}">{{ title }}</a>
                     </td>
                     <td class="">
+                        <a href="{{ url }}" class="link edit">Edytuj</a>
                     </td>
                 </tr>
             {% endfor %}
         {% else %}
             <tr>
                 <td class="" colspan="5">
-                    Brak aktualności
+                    Brak treści
                 </td>
             </tr>
         {% endif %}

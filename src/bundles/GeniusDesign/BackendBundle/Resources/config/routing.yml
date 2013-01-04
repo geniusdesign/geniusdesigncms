@@ -36,6 +36,13 @@ genius_news_toggle_published:
     requirements:
         newsSlug: "[\w-]+"
         languageCode: "[\w-]+"
+
+genius_news_delete_image:
+    pattern: /{languageCode}/aktualnosci/usun/obrazek/{newsSlug}
+    defaults: {_controller: GeniusDesignBackendBundle:News:deleteImage, languageCode: ''}
+    requirements:
+        newsSlug: "[\w-]+"
+        languageCode: "[\w-]+"
     
 genius_news_list:
     pattern: /{languageCode}/aktualnosci

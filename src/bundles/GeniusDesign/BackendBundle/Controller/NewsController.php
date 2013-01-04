@@ -171,6 +171,52 @@ class NewsController extends MainController {
     }
 
     /**
+     * Deletes news image by given news slug
+     * @return Response
+     */
+    public function deleteImageAction($languageCode, $newsSlug) {
+        $type = 'notice';
+        $message = 'Usunąłem obrazek';
+
+        if (!empty($newsSlug)) {
+            $repository = $this->getDoctrine()
+                    ->getEntityManager()
+                    ->getRepository('GeniusDesignComponentsNewsBundle:News');
+
+            $news = $repository->getNewsBySlug($newsSlug);
+
+            if (!empty($news)) {
+                $entityManager = $this->getDoctrine()->getEntityManager();
+                $deleted = true;
+
+                $imageFileName = $news->getImageFileName();
+
+                if (!empty($imageFileName)) {
+                    $entityConfigName = 'genius_design_components_news';
+                    $deleted = $this->get('genius_design_upload.helper')->removeFile($entityConfigName, $imageFileName, true, false);
+
+                    $news->setImageFileName(null);
+                    $entityManager->persist($news);
+                    $entityManager->flush();
+
+                    if (!$deleted) {
+                        $type = 'error';
+                        $message = 'Nie odnalazłem pliku do usunięcia';
+                    }
+                }
+            }
+        }
+
+        $this->addFlashMessage($type, $message);
+        
+        $parameters = array(
+            'newsSlug' => $newsSlug,
+            'languageCode' => $languageCode
+        );
+        return $this->redirectTo('genius_news_edit', $parameters);
+    }
+
+    /**
      * Toogle published parameter for news by given news slug
      * @return Response
      */

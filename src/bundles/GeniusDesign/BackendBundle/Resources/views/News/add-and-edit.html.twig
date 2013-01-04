@@ -13,7 +13,8 @@
         {{ form_widget(form) }}
 
         {% if isImageVisible and news.getImageFileName() is not empty %}
-            <img src="{{ genius_design_file_path('genius_design_components_news', news.getImageFileName(), 'small', true, true) }}" />
+            <img src="{{ genius_design_file_path('genius_design_components_news', news.getImageFileName(), 'small', true, true, true, 'medium') }}" />
+            <a href="{{ path('genius_news_delete_image', parameters | merge({'newsSlug': news.getTitleSlug()})) }}" class="confirm link delete">Usuń obrazek</a>
         {% endif %}
         
         <div class="form-navigation">

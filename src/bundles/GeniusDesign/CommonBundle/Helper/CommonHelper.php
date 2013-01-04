@@ -39,6 +39,22 @@ class CommonHelper {
     }
 
     /**
+     * Returns no picture template path
+     * @return string
+     */
+    public function getNoPictureTemplatePath() {
+        return $this->getContainer()->getParameter('genius_design_common.no_picture_template_path');
+    }
+
+    /**
+     * Returns no picture sizes
+     * @return string
+     */
+    public function getNoPictureSizes() {
+        return $this->getContainer()->getParameter('genius_design_common.no_picture_sizes');
+    }
+    
+    /**
      * Returns name of the current route
      * @return string
      */

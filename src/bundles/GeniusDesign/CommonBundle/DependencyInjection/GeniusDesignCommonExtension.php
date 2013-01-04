@@ -22,6 +22,28 @@ class GeniusDesignCommonExtension extends Extension {
         $config = $this->processConfiguration($configuration, $configs);
 
         /*
+         * Parameters for no picture
+         */
+        if (isset($config['no_picture'])) {
+            $noPicture = $config['no_picture'];
+
+            if (isset($noPicture['template_path'])) {
+                $container->setParameter('genius_design_common.no_picture_template_path', trim($noPicture['template_path']));
+            }
+
+            if (isset($noPicture['sizes'])) {
+                $sizes = $noPicture['sizes'];
+                $result = array();
+
+                foreach ($sizes as $size) {
+                    $result[] = trim($size['name']);
+                }
+
+                $container->setParameter('genius_design_common.no_picture_sizes', $result);
+            }
+        }
+
+        /*
          * Directory to deleted files
          */
         if (isset($config['deleted_files_path'])) {
