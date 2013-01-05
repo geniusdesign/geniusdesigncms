@@ -65,10 +65,8 @@ class GeniusDesignContentExtension extends \Twig_Extension {
                 ->get('doctrine')
                 ->getEntityManager();
 
-        $language = 'pl';
-
         $content = $manager->getRepository('GeniusDesignComponentsContentBundle:Content')
-                ->getContentBySlug($contentSlug, $language);
+                ->getContentBySlug($contentSlug);
 
         if ($content !== null) {
             $parameters = array(

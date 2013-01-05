@@ -1,66 +1,67 @@
 <?php
 
-namespace GeniusDesign\Components\ContentBundle\Entity;
+namespace GeniusDesign\FrontendBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Translatable\Translatable;
 
 /**
- * GeniusDesign\Components\ContentBundle\Entity\Content
+ * MenuItem
  *
- * @ORM\Table(name="genius_contents")
- * @ORM\Entity(repositoryClass="GeniusDesign\Components\ContentBundle\Repository\ContentRepository")
+ * @ORM\Table(name="genius_menu_frontend_menu_items")
+ * @ORM\Entity(repositoryClass="GeniusDesign\FrontendBundle\Repository\MenuItemRepository")
+ * 
+ * @author Paweł Cichoń <cichonpawelhd@gmail.com>
+ * @copyright GeniusDesign
  */
-class Content implements Translatable  {
+class MenuItem implements Translatable {
 
     /**
-     * @var integer $id
+     * @var integer
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
+    
     /**
-     * @var string $title
+     * @var string
      *
      * @ORM\Column(name="title", type="string", length=100)
      * @Gedmo\Translatable
      */
     private $title;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="original_title", type="string", length=100)
      */
     private $original_title;
-    
-    /**
-     * @var string $title_slug
-     *
-     * @ORM\Column(name="title_slug", type="string", length=100)
-     * @Gedmo\Slug(fields={"original_title"})
-     */
-    private $title_slug;
 
     /**
-     * @var text $content
+     * @var string
      *
-     * @ORM\Column(name="content", type="text", nullable=true)
-     * @Gedmo\Translatable
+     * @ORM\Column(name="slug", type="string", length=100)
+     * @Gedmo\Slug(fields={"original_title"})
      */
-    private $content;
+    private $slug;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="viewname", type="string", length=100)
+     */
+    private $viewname;
     
     /**
-     * @var string $autor
+     * @var boolean
      *
-     * @ORM\Column(name="autor", type="string", nullable=true)
+     * @ORM\Column(name="is_default", type="boolean")
      */
-    private $autor;
+    private $is_default = false;
 
     /**
      * @var datetime $created_at
@@ -100,15 +101,16 @@ class Content implements Translatable  {
     public function getId() {
         return $this->id;
     }
-
+    
     /**
      * Set title
      *
      * @param string $title
-     * @return \GeniusDesign\Components\ContentBundle\Entity\Content
+     * @return MenuItem
      */
     public function setTitle($title) {
         $this->title = $title;
+
         return $this;
     }
 
@@ -125,7 +127,7 @@ class Content implements Translatable  {
      * Set original title
      *
      * @param string $original_title
-     * @return Content
+     * @return MenuItem
      */
     public function setOriginalTitle($title) {
         $this->original_title = $title;
@@ -143,70 +145,73 @@ class Content implements Translatable  {
     }
 
     /**
-     * Set title_slug
+     * Set slug
      *
-     * @param string $titleSlug
-     * @return \GeniusDesign\Components\ContentBundle\Entity\Content
+     * @param string $slug
+     * @return MenuItem
      */
-    public function setTitleSlug($titleSlug) {
-        $this->title_slug = $titleSlug;
+    public function setSlug($slug) {
+        $this->slug = $slug;
+
         return $this;
     }
 
     /**
-     * Get title_slug
+     * Get slug
      *
      * @return string 
      */
-    public function getTitleSlug() {
-        return $this->title_slug;
+    public function getSlug() {
+        return $this->slug;
     }
 
     /**
-     * Set content
+     * Set viewname
      *
-     * @param text $content
-     * @return \GeniusDesign\Components\ContentBundle\Entity\Content
+     * @param string $viewname
+     * @return MenuItem
      */
-    public function setContent($content) {
-        $this->content = $content;
+    public function setViewname($viewname) {
+        $this->viewname = $viewname;
+
         return $this;
     }
 
     /**
-     * Get content
+     * Get viewname
      *
-     * @return text 
+     * @return string 
      */
-    public function getContent() {
-        return $this->content;
+    public function getViewname() {
+        return $this->viewname;
     }
 
     /**
-     * Set autor
+     * Set is_default
      *
-     * @param text $autor
-     * @return \GeniusDesign\Components\ContentBundle\Entity\Content
+     * @param boolean $value
+     * @return MenuItem
      */
-    public function setAutor($autor) {
-        $this->autor = $autor;
+    public function setIsDefault($value) {
+        $this->is_default = $value;
+
         return $this;
     }
 
     /**
-     * Get autor
+     * Get is_default
      *
-     * @return text 
+     * @return boolean 
      */
-    public function getAutor() {
-        return $this->autor;
+    public function getIsDefault() {
+        return $this->is_default;
     }
-
+    
     /**
      * Set created_at
      *
      * @param datetime $createdAt
-     * @return \GeniusDesign\Components\ContentBundle\Entity\Content
+     * @return \GeniusDesign\FrontendBundle\Entity\MenuItem
      */
     public function setCreatedAt($createdAt) {
         $this->created_at = $createdAt;
@@ -226,7 +231,7 @@ class Content implements Translatable  {
      * Set updated_at
      *
      * @param datetime $updatedAt
-     * @return \GeniusDesign\Components\ContentBundle\Entity\Content
+     * @return \GeniusDesign\FrontendBundle\Entity\MenuItem
      */
     public function setUpdatedAt($updatedAt) {
         $this->updated_at = $updatedAt;
@@ -255,7 +260,7 @@ class Content implements Translatable  {
      * Set deleted_at
      *
      * @param datetime $updatedAt
-     * @return \GeniusDesign\Components\ContentBundle\Entity\Content
+     * @return \GeniusDesign\Components\NewsBundle\Entity\News
      */
     public function setDeletedAt($deleted_at) {
         $this->deleted_at = $deleted_at;
@@ -266,7 +271,7 @@ class Content implements Translatable  {
      * Sets localization code
      * 
      * @param string $language The language string, language code
-     * @return \GeniusDesign\Components\NewsBundle\Entity\News
+     * @return \GeniusDesign\FrontendBundle\Entity\MenuItem
      */
     public function setTranslatableLocale($locale) {
         $this->locale = $locale;

@@ -13,7 +13,7 @@
     {% set route = item.routeName %}
     {% set parameters = item.parameters %}
 
-    {% if url is empty %}
+    {% if url is empty and route is not empty %}
         {% set url = path(route, parameters) %}
         {% set externalUrl = false %}
     {% endif %}

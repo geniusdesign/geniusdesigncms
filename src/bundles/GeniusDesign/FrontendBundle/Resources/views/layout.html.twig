@@ -11,7 +11,7 @@
 
         {% block stylesheets %}
             {#<link rel="stylesheet" type="text/css" href="{{ asset('bundles/geniusdesigncommon/css/reset.css') }}" media="all" />#}
-            <link rel="stylesheet" type="text/css" href="{{ asset('bundles/geniusdesignbackend/css/styles.css') }}" media="all" />
+            <link rel="stylesheet" type="text/css" href="{{ asset('bundles/geniusdesignfrontend/css/styles.css') }}" media="all" />
             <link rel="stylesheet" type="text/css" href="{{ asset('bundles/geniusdesigncommon/css/jquery-ui/ui-lightness/jquery-ui-1.9.2.custom.min.css') }}" media="all" />
         {% endblock %}
 
@@ -29,46 +29,36 @@
 
     <body>
         <div class="body">
-            {% if app.user is not empty %}
-                <div id="status-bar-container">
-                    <div id="status-bar">
-                        <div class="item last"><a href="{{ path('genius_logout') }}" class="logout">Wyloguj się</a></div>
-                        <div class="item">Zalogowany jako: <span class="name">{{ app.user.firstName }} {{ app.user.lastName }}</span></div>
-                        {#<div class="item"><a href="{{ path('page') }}" target="_blank">Przejdź do serwisu</a></div>#}
-                    </div>
-                </div>
-            {% endif %}
+            <div id="status-bar-container">
+                {% if genius_design_languages_defined() %}
+                    {{ genius_design_show_languages() }}
+                {% endif %}
+                    
+                <div id="status-bar">Pasek statusowy</div>
+            </div>
 
-            <div class="header">GENIUS DESIGN CMS</div>
+            <div class="header">Nagłówek strony</div>
+            
             <div class="main">
-                {% if app.user is not empty %}
-                    <div class="menu">Menu: 
-                        
+                <div class="menu">
                         {% set parameters = {'languageCode': genius_design_current_language_code()} %}
-                        {% set menu = {
-                            0: {
-                                'title': 'Aktualności',
-                                'url' : '',
-                                'routeName': 'genius_news_list',
-                                'parameters': parameters
-                                },
-                            1: {
-                                'title': 'Treści',
-                                'url' : '',
-                                'routeName': 'genius_content_list',
-                                'parameters': parameters
-                                }
-                        } 
-                        %}
+                        {% set menuItems = genius_frontend_menu_items() %}
+                        {% set menu = {} %}
+
+                        {% if menuItems is not empty %}
+                            {% for index, item in menuItems %}
+                                {% set menu = menu | merge ([{
+                                    'title': item.getTitle(),
+                                    'url' : '',
+                                    'routeName': 'genius_frontend_common',
+                                    'parameters': parameters | merge({'slug': item.getSlug()})
+                                }]) %}
+                            {% endfor %}
+                        {% endif %}
 
                         {{ display_simple_menu(menu, true, '', '', 'menu-left-bar') }}
-
-                        <hr />
-                        {% if genius_design_languages_defined() %}
-                            {{ genius_design_show_languages() }}
-                        {% endif %}
-                    </div>
-                {% endif %}
+                    
+                </div>
                 <div class="content">
                     {% include 'GeniusDesignBackendBundle:Messages:display.html.twig' %}
                     {% block content %}{% endblock %}

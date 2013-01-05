@@ -469,7 +469,7 @@ class News implements Translatable {
      * Sets localization code
      * 
      * @param string $language The language string, language code
-     * @return \GeniusDesign\Components\ContentBundle\Entity\Content
+     * @return \GeniusDesign\Components\NewsBundle\Entity\News
      */
     public function setTranslatableLocale($locale) {
         $this->locale = $locale;

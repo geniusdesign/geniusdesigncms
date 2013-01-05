@@ -52,23 +52,31 @@ a,
 }
 #status-bar-container #status-bar{
     float: right;
+    padding: 10px 0;
     width: auto;
 }
-#status-bar-container #status-bar .item{
-    float: right;
-    padding: 5px 0 5px 15px;
+#status-bar-container #languages-buttons{
+    float: left;
+    width: auto;
 }
+#languages-buttons li{
+    display: inline;
+}
+#languages-buttons li.current{
+    font-weight: bold;
+}
+
 /* -------- div header ----------*/
 
 .header{
-    background: #b1a69c;
-    border: 1px solid gray;
+    background: #F7F2E0;
+    border: 1px solid #FE9A2E;
     clear: both;
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
     padding: 20px 0;
-    text-align: left;
+    text-align: center;
 }
 
 .header,
@@ -85,8 +93,8 @@ a,
     width: 1100px;
 }
 .main .menu{
-    background: #c9edc3;
-    border: 1px solid gray;
+    background: #E6E0F8;
+    border: 1px solid #9F81F7;
     float: left;
     min-height: 300px;
     margin: 0 0 10px 0;
@@ -151,12 +159,7 @@ a,
 .main .content .flash-error div{
     background-image: url('/bundles/geniusdesigncommon/img/icons/exclamation-red.png');
 }
-.main .content .options-box{
-    clear: both;
-    float: left;
-    padding: 5px 0 10px 0;
-    width: 100%;
-}
+
 .main .content .link{
     background-repeat: no-repeat;
     background-position: 0 50%;
@@ -194,10 +197,6 @@ a,
     background: #afafaf;
     padding: 5px;
     text-align: left;
-}
-
-#languages-buttons li.current{
-    font-weight: bold;
 }
 
 .menu-left-bar li.current{

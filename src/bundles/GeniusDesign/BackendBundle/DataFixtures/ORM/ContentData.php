@@ -45,7 +45,51 @@ class ContentData implements FixtureInterface, OrderedFixtureInterface, Containe
      * @return void
      */
     public function load(\Doctrine\Common\Persistence\ObjectManager $manager) {
-        $maxContentCount = 3;
+        $contents = array(
+            array(
+                'title' => 'Strona główna',
+                'content' => 'Suspendisse ut leo vel nunc ullamcorper aliquet quis sit amet orci. Phasellus nulla dolor, tristique ac elementum blandit, aliquam a nunc. In dignissim vulputate mauris accumsan rhoncus.'
+            ),
+            array(
+                'title' => 'O firmie',
+                'content' => 'Integer pellentesque ante ac libero condimentum condimentum. Fusce pellentesque pellentesque tellus, vel congue dolor fermentum vel. Vivamus facilisis egestas libero sed sollicitudin. In eleifend felis quis nulla ornare condimentum. Suspendisse in magna et metus ultrices eleifend. Nam accumsan viverra tortor, et ornare ligula consectetur sed. Phasellus rutrum placerat ipsum, id tincidunt nibh tincidunt sed. Nullam aliquet nibh id orci convallis tempus molestie lectus euismod. Nullam placerat ante nec ante convallis dapibus.'
+            ),
+            array(
+                'title' => 'Oferta',
+                'content' => 'Sed tincidunt arcu non lorem dapibus nec ornare enim posuere. Vivamus lectus odio, sodales eu gravida et, lobortis porttitor augue. Sed aliquam venenatis turpis at porta. In elementum neque et dolor malesuada placerat. '
+            ),
+            array(
+                'title' => 'Kontakt',
+                'content' => 'Donec ac nunc mauris, nec bibendum turpis. Mauris pharetra dictum tellus, at lacinia sapien rhoncus tincidunt.'
+            ),
+        );
+
+        $translations = array(
+            'Strona główna' => array(
+                'pl' => 'Strona główna',
+                'en' => 'Homepage en',
+                'de' => 'Homepage de',
+                'ru' => 'Homepage ru'
+            ),
+            'O firmie' => array(
+                'pl' => 'O firmie',
+                'en' => 'About us en',
+                'de' => 'About us de',
+                'ru' => 'About us ru'
+            ),
+            'Oferta' => array(
+                'pl' => 'Oferta',
+                'en' => 'Offer en',
+                'de' => 'Offer de',
+                'ru' => 'Offer ru'
+            ),
+            'Kontakt' => array(
+                'pl' => 'Kontakt',
+                'en' => 'Contact en',
+                'de' => 'Contact de',
+                'ru' => 'Contact ru'
+            )
+        );
 
         $languages = $this->getContainer()
                 ->get('session')
@@ -55,31 +99,36 @@ class ContentData implements FixtureInterface, OrderedFixtureInterface, Containe
                 ->get('genius_design_language.helper')
                 ->areLanguagesDefined();
 
-        $titleTemplate = 'Content-%s';
-        $contentTemplate = 'Treść - %s';
-
-        for ($i = 1; $i <= $maxContentCount; $i++) {
-            $title = sprintf($titleTemplate, $i);
-            $titleLowered = mb_strtolower($title, 'UTF-8');
-            $content = sprintf($contentTemplate, $titleLowered);
+        foreach ($contents as $item) {
+            $title = $item['title'];
+            $content = $item['content'];
 
             $contentObject = new Content();
             $contentObject->setTitle($title)
+                    ->setOriginalTitle($title)
                     ->setContent($content)
-                    ->setAutor('nobody noname');
+                    ->setAutor('Jan Kowalski');
 
             $manager->persist($contentObject);
             $manager->flush();
 
             if (!empty($languages) && $languagesDefined) {
                 foreach ($languages as $language) {
+                    $title = $item['title'];
+                    $content = $item['content'];
+                    
                     $languageLcid = $language->getLanguageLcid();
                     $languageCode = $language->getLanguageCode();
 
-                    $contentObject->setTitle($title . ' - ' . $languageCode)
-                            ->setContent($content . ' - ' . $languageCode)
-                            ->setAutor($content . ' - ' . $languageCode)
-                            ->setTranslatableLocale($languageLcid);
+                    if (isset($translations[$title][$languageCode])) {
+                        $title = $translations[$title][$languageCode];
+                    } else {
+                        $title = sprintf('%s - %s', $title, $languageCode);
+                    }
+
+                    $contentObject->setTranslatableLocale($languageLcid)
+                            ->setTitle($title)
+                            ->setContent(sprintf('%s - %s', $content, $languageCode));
 
                     $manager->persist($contentObject);
                     $manager->flush();

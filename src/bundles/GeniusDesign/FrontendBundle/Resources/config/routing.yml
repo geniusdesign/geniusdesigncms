@@ -1,4 +1,13 @@
-genius_frontend_main:
-    pattern: /
-    defaults: {_controller: GeniusDesignFrontendBundle:Default:index, name: ''}
 
+genius_frontend_common:
+    pattern: /{languageCode}/{slug}
+    defaults: {_controller: GeniusDesignFrontendBundle:Frontend:index, languageCode: '', slug: ''}
+    requirements:
+        languageCode: "[\w-]+"
+        slug: "[\w-]+"
+
+genius_frontend_main:
+    pattern: /{languageCode}
+    defaults: {_controller: GeniusDesignFrontendBundle:Frontend:index, languageCode: ''}
+    requirements:
+        languageCode: "[\w-]+"

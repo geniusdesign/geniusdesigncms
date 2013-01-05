@@ -52,7 +52,7 @@ class GeniusDesignComponentsMenuExtension extends \Twig_Extension {
     }
 
     /**
-     * Returns path for the file
+     * Displays menu
      * 
      * @return string
      */
