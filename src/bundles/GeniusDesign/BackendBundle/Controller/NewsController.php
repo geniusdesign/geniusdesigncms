@@ -109,7 +109,8 @@ class NewsController extends MainController {
             if ($form->isValid()) {
                 $uploadHelper = $this->get('genius_design_upload.helper');
                 $news->setUploadHelper($uploadHelper)
-                        ->setTranslatableLocale($languageLcid);
+                        ->setTranslatableLocale($languageLcid)
+                        ->setOriginalTitle($news->getTitle());
 
                 $entityManager->persist($news);
                 $entityManager->flush();

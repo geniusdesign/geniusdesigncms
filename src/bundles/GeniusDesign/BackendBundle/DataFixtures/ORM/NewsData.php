@@ -71,6 +71,7 @@ class NewsData implements FixtureInterface, OrderedFixtureInterface, ContainerAw
 
             $news = new News();
             $news->setTitle($title)
+                    ->setOriginalTitle($title)
                     ->setEntrance($entrance)
                     ->setContent($content)
                     ->setImageFileName(null)

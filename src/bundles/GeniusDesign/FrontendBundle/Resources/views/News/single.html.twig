@@ -1,0 +1,44 @@
+{% extends 'GeniusDesignFrontendBundle::layout.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}    
+
+{% block content %}
+            {% if news is not empty %}
+                    {% set newsSlug = news.getTitleSlug() %}
+                    {% set url = path('genius_frontend_news_list', {'languageCode': languageCode}) %}
+
+                    {% set fileName = news.getImageFileName() %}
+                    {% set title = news.getTitle() %}
+                    {% set entrance = news.getEntrance() %}
+
+
+                    <div class="news-item">
+                        <p class="news-paragraph">
+                            {% if isImageVisible %}
+                                    {% if news.getImageFileName() is not empty %}
+                                            <img class="image" src="{{ genius_design_file_path('genius_design_components_news', news.getImageFileName(), 'tiny', true, true, true, 'small') }}" />
+                                    {% endif %}
+                            {% endif %}
+                                
+                            <span class="title">{{ title }}</span>
+                            <span class="entrance">{{ entrance }}</span>
+                        </p>
+                        <p class="news-paragraph">
+                            <span class="content">{{ news.getContent() }}</span>
+                        </p>
+                        <div class="clear"></div>
+                        <div class="news-options">
+                            {% if isDateVisible %}
+                                <span class="left">
+                                    {{ news.getDisplayedDate() | date(dateFormat) }} {{ news.getAutor() }}
+                                </span>
+                            {% endif %}
+                                
+                            <span class="right"><a href="{{ url }}">Cofnij</a></span>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+            {% endif %}
+{% endblock %}

@@ -32,13 +32,19 @@ class News implements Translatable {
      * @Gedmo\Translatable
      */
     private $title;
-
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="original_title", type="string", length=100)
+     */
+    private $original_title;
+    
     /**
      * @var string $title_slug
      *
      * @ORM\Column(name="title_slug", type="string", length=100)
-     * @Gedmo\Slug(fields={"title"})
-     * @Gedmo\Translatable
+     * @Gedmo\Slug(fields={"original_title"})
      */
     private $title_slug;
 
@@ -153,6 +159,27 @@ class News implements Translatable {
      */
     public function getTitle() {
         return $this->title;
+    }
+
+    /**
+     * Set original title
+     *
+     * @param string $original_title
+     * @return News
+     */
+    public function setOriginalTitle($title) {
+        $this->original_title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get original title
+     *
+     * @return string 
+     */
+    public function getOriginalTitle() {
+        return $this->original_title;
     }
 
     /**

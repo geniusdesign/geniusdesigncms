@@ -1,4 +1,16 @@
+genius_frontend_news_single:
+    pattern: /{languageCode}/aktualnosc/{newsSlug}
+    defaults: {_controller: GeniusDesignFrontendBundle:News:single, languageCode: ''}
+    requirements:
+        languageCode: "[\w-]+"
+        newsSlug:  "[\w-]+"
 
+genius_frontend_news_list:
+    pattern: /{languageCode}/aktualnosci
+    defaults: {_controller: GeniusDesignFrontendBundle:News:list, languageCode: ''}
+    requirements:
+        languageCode: "[\w-]+"
+        
 genius_frontend_common:
     pattern: /{languageCode}/{slug}
     defaults: {_controller: GeniusDesignFrontendBundle:Frontend:index, languageCode: '', slug: ''}

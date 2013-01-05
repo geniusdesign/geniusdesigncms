@@ -1,0 +1,49 @@
+{% extends 'GeniusDesignFrontendBundle::layout.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}    
+
+{% block content %}
+            {% if news is not empty %}
+                {% for index, item in news %}
+                    {% set newsSlug = item.getTitleSlug() %}
+                    {% set url = path('genius_frontend_news_single', {'newsSlug': newsSlug, 'languageCode': languageCode}) %}
+
+                    {% set fileName = item.getImageFileName() %}
+                    {% set title = item.getTitle() %}
+                    {% set entrance = item.getEntrance() %}
+
+
+                    <div class="news-item">
+                        <p class="news-paragraph">
+                            {% if isImageVisible %}
+                                    {% if item.getImageFileName() is not empty %}
+                                        <a class="image" href="{{ url }}">
+                                            <img src="{{ genius_design_file_path('genius_design_components_news', item.getImageFileName(), 'tiny', true, true, true, 'small') }}" />
+                                        </a>
+                                    {% endif %}
+                            {% endif %}
+                                
+                            <span class="title"><a href="{{ url }}">{{ title }}</a></span>
+                            <span class="entrance"><a href="{{ url }}">{{ entrance }}</a></span>
+                        </p>
+                        <div class="clear"></div>
+                        <div class="news-options">
+                            {% if isDateVisible %}
+                                <span class="left">
+                                    <a href="{{ url }}">{{ item.getDisplayedDate() | date(dateFormat) }}</a>
+                                </span>
+                            {% endif %}
+                                
+                            <span class="right"><a href="{{ url }}">Czytaj więcej</a></span>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty">
+                        Brak aktualności
+                </div>
+            {% endif %}
+{% endblock %}

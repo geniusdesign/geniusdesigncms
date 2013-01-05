@@ -36,6 +36,9 @@ a,
     color: #db6e00;
     text-decoration: none;
 }
+.clear{
+    clear: both;
+}
 
 
 /* -------- div body ----------*/
@@ -201,4 +204,33 @@ a,
 
 .menu-left-bar li.current{
     font-weight: bold;
+}
+
+.news-item{
+    background: #F2FBEF;
+    margin-bottom: 10px;
+    padding: 3px;
+}
+.news-item .news-paragraph .image{
+    float: left;
+    margin: 0 10px 10px 0;
+}
+.news-item .news-paragraph .title,
+.news-item .news-paragraph .entrance,
+.news-item .news-paragraph .content{
+    display: block;
+    margin-bottom: 10px;
+}
+.news-item .news-paragraph .title{
+    font-weight: bold;
+    font-size: 14px;
+}
+.news-item .news-paragraph .entrance{
+    font-size: 12px;
+}
+.news-item .news-options .left{
+    float: left;
+}
+.news-item .news-options .right{
+    float: right;
 }

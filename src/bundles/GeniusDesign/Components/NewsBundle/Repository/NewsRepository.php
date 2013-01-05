@@ -17,12 +17,17 @@ class NewsRepository extends MainRepository {
      * 
      * @param [integer $limit = null] Maximum amount of items
      * @param [integer $offset = null] The start position, offset
+     * @param [boolean $isPublished = null] 
      * @return array
      */
-    public function getNews($limit = null, $offset = null) {
+    public function getNews($limit = null, $offset = null, $isPublished = false) {
         $criteria = array(
             'deleted_at' => null
         );
+
+        if ($isPublished) {
+            $criteria['published'] = true;
+        }
 
         $orderBy = array('displayed_date' => 'desc');
 
@@ -33,13 +38,18 @@ class NewsRepository extends MainRepository {
      * Returns news by given title slug
      * 
      * @param string $newsSlug The news slug
+     * @param [boolean $isPublished = null] 
      * @return array
      */
-    public function getNewsBySlug($newsSlug) {
+    public function getNewsBySlug($newsSlug, $isPublished = false) {
         $criteria = array(
             'title_slug' => $newsSlug,
             'deleted_at' => null
         );
+
+        if ($isPublished) {
+            $criteria['published'] = true;
+        }
 
         return $this->getEffect($criteria, array(), 0, 0, false);
     }
@@ -48,13 +58,18 @@ class NewsRepository extends MainRepository {
      * Returns news by given news id
      * 
      * @param string $newsId The news Id
+     * @param [boolean $isPublished = null] 
      * @return array
      */
-    public function getNewsById($newsId) {
+    public function getNewsById($newsId, $isPublished = false) {
         $criteria = array(
             'id' => $newsId,
             'deleted_at' => null
         );
+
+        if ($isPublished) {
+            $criteria['published'] = true;
+        }
 
         return $this->getEffect($criteria, array(), 0, 0, false);
     }
