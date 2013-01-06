@@ -1,0 +1,9 @@
+parameters:
+    genius_design_gallery.helper.class: GeniusDesign\Components\GalleryBundle\Helper\GalleryHelper
+    
+services:
+    genius_design_gallery.helper:
+        class: %genius_design_gallery.helper.class%
+        arguments:
+            container: "@service_container"
+        shared: true

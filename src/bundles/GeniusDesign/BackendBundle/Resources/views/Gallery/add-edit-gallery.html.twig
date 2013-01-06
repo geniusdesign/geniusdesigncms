@@ -1,0 +1,25 @@
+{% extends 'GeniusDesignBackendBundle::layout.html.twig' %}
+
+{% block content %}
+    {% set parameters = {'languageCode': languageCode} %}
+    {% set routeName = 'genius_gallery_add' %}
+
+    {% if not isAddsGallery %}
+        {% set parameters = parameters | merge({'gallerySlug': gallery.getSlug()}) %}
+        {% set routeName = 'genius_gallery_edit' %}
+    {% endif %}
+
+    <form method="post" action="{{ path(routeName, parameters) }}">
+        {{ form_widget(form) }}
+        
+        <div class="form-navigation">
+            <div class="submit-button">
+                <input type="submit" id="go" name="go" value="Zapisz" />
+            </div>
+
+            <div class="">
+                <a class="link cancel" href="{{ path('genius_gallery_list', {'languageCode': languageCode}) }}">Anuluj</a>
+            </div>
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'GeniusDesignBackendBundle::layout.html.twig' %}
+
+{% block content %}
+    {% set parameterLanguage = {'languageCode': languageCode} %}
+    {% set parameters = parameterLanguage | merge({'gallerySlug': gallery.getSlug()}) %}
+    {% set parametersCancel = parameterLanguage %}
+    {% set routeName = 'genius_gallery_images' %}
+    {% set routeCancel = 'genius_gallery_list' %}
+
+    {% if isEditImage %}
+        {% set parameters = parameters | merge({'imageId': image.getId()}) %}
+        {% set parametersCancel = parameterLanguage | merge({'gallerySlug': gallery.getSlug()}) %}
+        {% set routeName = 'genius_gallery_image_edit' %}
+        {% set routeCancel = 'genius_gallery_images' %}
+    {% endif %}
+
+    <div class="gallery">
+        {% if not isEditImage %}
+            <div class="gallery-box">
+                    <p class="title">{{ gallery.getTitle() }}</p>
+                    
+                    {% if isGalleryDescriptionEnabled %}
+                        <p class="description">{{ gallery.getDescription() }}</p>
+                    {% endif %}
+                        
+                    <div class=""><a href="{{ path('genius_gallery_edit', parameters) }}" class="link  edit-description">Edytuj</a></div>
+            </div><!-- end of Gallery Box -->
+        {% endif %}
+
+        <div class="clear"></div>
+
+        <form method="post" action="{{ path(routeName, parameters) }}" {{ form_enctype(form) }}>
+            {{ form_widget(form) }}
+
+            <div class="form-navigation">
+                <div class="submit-button"> {# contentsubmitButton #}
+                    <input type="submit" id="go" name="go" value="Zapisz" />
+                </div>
+
+                <div class="">
+                    <a class="link cancel" href="{{ path(routeCancel, parametersCancel) }}">Cofnij</a>
+                </div>
+            </div>
+        </form>
+
+        <div class="clear"></div>
+
+        {% if not isEditImage %}
+            <div class="images">
+                {% set images = gallery.getImages()  %}
+
+                {% if images is not empty %}
+                    {% for index, item in images %}
+                        {% set imageId = item.getId() %}
+                        {% set title = item.getTitle() %}
+                        {% set autor = item.getAutor() %}
+                        {% set tooltip = title %}
+                    
+                        {% if isImageAutorEnabled %}
+                            {% set tooltip = tooltip ~ '\n' ~ autor %}
+                        {% endif %}
+                    
+                        <div class="box" title="{{ tooltip }}">
+                            <img alt="{{ tooltip }}" src="{{ genius_design_file_path('genius_design_components_gallery', item.getImageFileName(), 'small', true, true, true, 'medium') }}" />
+                            <a href="{{ path('genius_gallery_image_edit', {'gallerySlug': gallery.getSlug(), 'languageCode': languageCode, 'imageId': imageId}) }}" class="link edit-description">Edytuj</a>
+                            <a class="link delete confirm" href="{{ path('genius_gallery_image_delete', {'gallerySlug': gallery.getSlug(), 'imageId': imageId, 'languageCode': languageCode}) }}">Usuń</a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div>
+                        Brak zdjęć
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div> <!-- end of Gallery -->
+{% endblock %}

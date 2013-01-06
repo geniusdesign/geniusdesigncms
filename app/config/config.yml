@@ -114,3 +114,16 @@ genius_design_components_news:
             tiny: 70 x 35
             small: 115 x 80
             large: 800 x 600
+    
+genius_design_components_gallery:
+    onlyImagesMode: false
+    showGalleryDescription: true
+    showImageAutor: true
+    upload:
+        paths:
+            relative: /upload/gallery
+            absolute: %kernel.root_dir%/../web/upload/gallery
+        sizes:
+            tiny: 70 x 35
+            small: 115 x 80
+            large: 800 x 600

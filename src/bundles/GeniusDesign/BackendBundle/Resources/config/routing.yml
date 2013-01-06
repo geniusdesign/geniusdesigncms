@@ -7,14 +7,65 @@ genius_login_check:
     
 genius_logout:
     pattern: /wyloguj
+
+
+
+genius_gallery_image_delete:
+    pattern: /{languageCode}/galeria/{gallerySlug}/zdjecie/usun/{imageId}
+    defaults: {_controller: GeniusDesignBackendBundle:Gallery:imageDelete, languageCode: ''}
+    requirements:
+        imageId: "[\d]+"
+        gallerySlug: "[\w-]+"
+        languageCode: "[\w-]+"
+  
+genius_gallery_image_edit:
+    pattern: /{languageCode}/galeria/{gallerySlug}/zdjecie/edytuj/{imageId}
+    defaults: {_controller: GeniusDesignBackendBundle:Gallery:imageEdit, languageCode: ''}
+    requirements:
+        imageId: "[\d]+"
+        gallerySlug: "[\w-]+"
+        languageCode: "[\w-]+"
+        
+genius_gallery_images:
+    pattern: /{languageCode}/galeria/zdjecia/{gallerySlug}
+    defaults: {_controller: GeniusDesignBackendBundle:Gallery:images, languageCode: ''}
+    requirements:
+        gallerySlug: "[\w-]+"
+        languageCode: "[\w-]+"
+
+genius_gallery_delete:
+    pattern: /{languageCode}/galeria/usun/{gallerySlug}
+    defaults: {_controller: GeniusDesignBackendBundle:Gallery:galleryDelete, languageCode: ''}
+    requirements:
+        gallerySlug: "[\w-]+"
+        languageCode: "[\w-]+"
+
+genius_gallery_edit:
+    pattern: /{languageCode}/galeria/edytuj/{gallerySlug}
+    defaults: {_controller: GeniusDesignBackendBundle:Gallery:edit, languageCode: ''}
+    requirements:
+        gallerySlug: "[\w-]+"
+        languageCode: "[\w-]+"
+
+genius_gallery_add:
+    pattern: /{languageCode}/galeria/dodaj
+    defaults: {_controller: GeniusDesignBackendBundle:Gallery:add, languageCode: ''}
+    requirements:
+        languageCode: "[\w-]+"
     
+genius_gallery_list:
+    pattern: /{languageCode}/galerie
+    defaults: {_controller: GeniusDesignBackendBundle:Gallery:list, languageCode: ''}
+    requirements:
+        languageCode: "[\w-]+"
     
-    
+
+
 genius_news_edit:
     pattern: /{languageCode}/aktualnosci/edycja/{newsSlug}
     defaults: {_controller: GeniusDesignBackendBundle:News:edit, languageCode: ''}
     requirements:
-        contentSlug: "[\w-]+"
+        newsSlug: "[\w-]+"
         languageCode: "[\w-]+"
         
 genius_news_add:
@@ -24,21 +75,21 @@ genius_news_add:
         languageCode: "[\w-]+"
 
 genius_news_delete:
-    pattern: /{languageCode}/aktualnosci/usun/{newsSlug}
+    pattern: /{languageCode}/aktualnosc/usun/{newsSlug}
     defaults: {_controller: GeniusDesignBackendBundle:News:delete, languageCode: ''}
     requirements:
         newsSlug: "[\w-]+"
         languageCode: "[\w-]+"
-        
+
 genius_news_toggle_published:
-    pattern: /{languageCode}/aktualnosci/przelacz/{newsSlug}
+    pattern: /{languageCode}/aktualnosc/przelacz/{newsSlug}
     defaults: {_controller: GeniusDesignBackendBundle:News:togglePublished, languageCode: ''}
     requirements:
         newsSlug: "[\w-]+"
         languageCode: "[\w-]+"
 
 genius_news_delete_image:
-    pattern: /{languageCode}/aktualnosci/usun/obrazek/{newsSlug}
+    pattern: /{languageCode}/aktualnosc/usun/obrazek/{newsSlug}
     defaults: {_controller: GeniusDesignBackendBundle:News:deleteImage, languageCode: ''}
     requirements:
         newsSlug: "[\w-]+"
@@ -47,6 +98,8 @@ genius_news_delete_image:
 genius_news_list:
     pattern: /{languageCode}/aktualnosci
     defaults: {_controller: GeniusDesignBackendBundle:News:list, languageCode: ''}
+    requirements:
+        languageCode: "[\w-]+"
 
 
 

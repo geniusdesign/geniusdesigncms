@@ -37,6 +37,9 @@ a,
     text-decoration: none;
 }
 
+.clear{
+    clear: both;
+}
 
 /* -------- div body ----------*/
 
@@ -170,6 +173,9 @@ a,
 .main .content .edit{
     background-image: url('/bundles/geniusdesigncommon/img/icons/pencil.png');
 }
+.main .content .edit-description{
+    background-image: url('/bundles/geniusdesigncommon/img/icons/balloon--pencil.png');
+}
 .main .content .toggle{
     background-image: url('/bundles/geniusdesigncommon/img/icons/arrow-retweet.png');
 }
@@ -181,6 +187,9 @@ a,
 }
 .main .content .save{
     background-image: url('/bundles/geniusdesigncommon/img/icons/disk-black.png');
+}
+.main .content .inbox-image{
+    background-image: url('/bundles/geniusdesigncommon/img/icons/inbox-image.png');
 }
 .main .content textarea{
     height: 150px;
@@ -202,4 +211,65 @@ a,
 
 .menu-left-bar li.current{
     font-weight: bold;
+}
+
+
+.main .content .gallery-box{
+	float: left;
+	margin-bottom: 10px;
+	padding: 10px;
+}
+.main .content .gallery-box .image{
+	-webkit-box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.6);
+	-moz-box-shadow:    1px 1px 10px rgba(0, 0, 0, 0.6);
+	box-shadow:         1px 1px 10px rgba(0, 0, 0, 0.6);
+	float: left;
+	margin: 0 15px 10px 0;
+	padding: 2px;
+	text-align: center;
+	width: 150px;
+}
+.main .content .gallery-box .image img{
+	max-width: 150px;
+	max-height: 115px;
+}
+.main .content .gallery-box a:hover{
+	color: #6a3838;
+}
+.main .content .gallery-box .title,
+.main .content .gallery-box .description,
+.main .content .gallery-box .autor{
+	display: block;
+	margin: 0 0 8px 0;
+}
+.main .content .gallery-box .title{
+	color: #3f0404;
+	font-size: 13px;
+	font-weight: bold;
+}
+.main .content .gallery-box .description{
+	color: #6d6d6d;
+}
+.main .content .gallery-box .autor{
+	color: #acacac;
+	display: inline;
+	width: auto;
+}
+.main .content .images{
+	float: left;
+}
+.main .content .images .box{
+	float: left;
+	height: 100px;
+	margin: 10px;
+	text-align: center;
+	width: 100px;
+}
+.main .content .images .box img{
+	-webkit-box-shadow: 0px 0px 10px rgba(50, 50, 50, 0.5);
+	-moz-box-shadow:    0px 0px 10px rgba(50, 50, 50, 0.5);
+	box-shadow:         0px 0px 10px rgba(50, 50, 50, 0.5);
+	max-height: 100px;
+	max-width: 100px;
+	padding: 2px;
 }

@@ -1,0 +1,53 @@
+{% extends 'GeniusDesignBackendBundle::layout.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}    
+
+{% block content %}
+    <div class="options-box">
+        <a class="link add" href="{{ path('genius_gallery_add', {'languageCode': languageCode}) }}" class="">Dodaj nową galerię</a>
+    </div>
+
+    <table id="gallery-list" class="centered list">
+        <thead>
+            <tr>
+                <th>Lp.</th>
+                <th>Tytuł</th>
+                <th>Zdjęć</th>
+                <th>Operacje</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            {% if galleries is not empty %}
+                {% for index, item in galleries %}
+                    {% set gallerySlug = item.getSlug() %}
+                    {% set url = path('genius_gallery_images', {'gallerySlug': gallerySlug, 'languageCode': languageCode}) %}
+                    {% set title = item.getTitle() %}
+
+                    <tr>
+                        <td class="">
+                            <a href="{{ url }}">{{ index + 1 }}{#{ index + 1 + offset }#}</a>
+                        </td>
+                        <td class="" title="{{ title }}">
+                            <a href="{{ url }}">{{ title }}</a>
+                        </td>
+                        <td>{{ item.images | length }}</td>
+                        <td class="">
+                            <a class="link delete confirm" href="{{ path('genius_gallery_delete', {'gallerySlug': gallerySlug, 'languageCode': languageCode}) }}">Usuń</a>
+                            <a href="{{ path('genius_gallery_edit', {'gallerySlug': gallerySlug, 'languageCode': languageCode}) }}" class="link edit-description">Edytuj</a>
+                            <a href="{{ url }}" class="link inbox-image">Przeglądaj</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td class="" colspan="4">
+                        Brak galerii
+                    </td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+{% endblock %}
