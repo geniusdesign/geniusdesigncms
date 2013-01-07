@@ -43,6 +43,7 @@ class AppKernel extends Kernel {
             new GeniusDesign\Components\ContentBundle\GeniusDesignComponentsContentBundle(),
             new GeniusDesign\Components\MenuBundle\GeniusDesignComponentsMenuBundle(),
             new GeniusDesign\Components\GalleryBundle\GeniusDesignComponentsGalleryBundle(),
+            new GeniusDesign\Components\SimpleUserBundle\GeniusDesignComponentsSimpleUserBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

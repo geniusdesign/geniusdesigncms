@@ -1,0 +1,78 @@
+{% extends 'GeniusDesignBackendBundle::layout.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}    
+
+{% block content %}
+    <div class="options-box">
+        <a class="link add" href="{{ path('genius_simple_user_add', {'languageCode': languageCode}) }}" class="">Dodaj użytkownika</a>
+    </div>
+
+    <table id="user-list" class="centered list">
+        <thead>
+            <tr>
+                <th>Lp.</th>
+                <th>Nazwa</th>
+                <th>E-mail</th>
+                <th>Rola</th>
+                <th>Operacje</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            {% if users is not empty %}
+                {% for index, item in users %}
+                    {% set userId = item.getId() %}
+                    {% set url = path('genius_simple_user_edit', {'userId': userId, 'languageCode': languageCode}) %}
+                    {% set firstName = item.getFirstName() %}
+                    {% set lastName = item.getLastName() %}
+                    {% set template  = '%s %s' %}
+
+                    {% if firstName is empty and lastName is not empty %}
+                        {% set template  = '%s%s' %}
+                    {% endif%}
+                
+                    {% set name = template | format(firstName, lastName) %}
+                
+                    {% if firstName is empty and lastName is empty %}
+                        {% set name = '-' %}
+                    {% endif%}
+
+                    <tr>
+                        <td class="">
+                            <a href="{{ url }}">{{ index + 1 }}{#{ index + 1 + offset }#}</a>
+                        </td>
+                        <td class="" title="{{ name }}">
+                            <a href="{{ url }}">{{ name }}</a>
+                        </td>
+                        <td class="" title="{{ item.getEmail() }}">
+                            <a href="{{ url }}">{{ item.getEmail() }}</a>
+                        </td>
+                        <td class="" title="Rola">
+                            {% set role = item.getRole() %}
+
+                            <a href="{{ url }}">
+                                {% if role is not empty %}
+                                    {{ role.getName() }}
+                                {% else %}
+                                    brak roli
+                                {% endif%}
+                            </a>
+                        </td>
+                        <td class="">
+                            <a class="link delete confirm" href="{{ path('genius_simple_user_delete', {'userId': userId, 'languageCode': languageCode}) }}">Usuń</a>
+                            <a href="{{ url }}" class="link edit">Edytuj</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td class="" colspan="5">
+                        Brak uæytkowników
+                    </td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -10,7 +10,7 @@ use Gedmo\Translatable\Translatable;
 /**
  * Image
  *
- * @ORM\Table(name="genius_gallery_images")
+ * @ORM\Table(name="genius_1_gallery_images")
  * @ORM\Entity(repositoryClass="GeniusDesign\Components\GalleryBundle\Repository\ImageRepository")
  * @ORM\HasLifecycleCallbacks
  */

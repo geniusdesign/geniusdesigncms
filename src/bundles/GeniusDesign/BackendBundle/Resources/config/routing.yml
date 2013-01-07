@@ -10,6 +10,34 @@ genius_logout:
 
 
 
+genius_simple_user_delete:
+    pattern: /{languageCode}/uzytkownik/usun/{userId}
+    defaults: {_controller: GeniusDesignBackendBundle:SimpleUser:delete, languageCode: ''}
+    requirements:
+        languageCode: "[\w-]+"
+        userId: "[\d]+"
+    
+genius_simple_user_edit:
+    pattern: /{languageCode}/uzytkownik/edycja/{userId}
+    defaults: {_controller: GeniusDesignBackendBundle:SimpleUser:edit, languageCode: ''}
+    requirements:
+        languageCode: "[\w-]+"
+        userId: "[\d]+"
+        
+genius_simple_user_add:
+    pattern: /{languageCode}/uzytkownik/dodaj
+    defaults: {_controller: GeniusDesignBackendBundle:SimpleUser:add, languageCode: ''}
+    requirements:
+        languageCode: "[\w-]+"
+
+genius_simple_user_list:
+    pattern: /{languageCode}/uzytkownicy
+    defaults: {_controller: GeniusDesignBackendBundle:SimpleUser:list, languageCode: ''}
+    requirements:
+        languageCode: "[\w-]+"
+        
+        
+
 genius_gallery_image_delete:
     pattern: /{languageCode}/galeria/{gallerySlug}/zdjecie/usun/{imageId}
     defaults: {_controller: GeniusDesignBackendBundle:Gallery:imageDelete, languageCode: ''}
@@ -59,8 +87,8 @@ genius_gallery_list:
     requirements:
         languageCode: "[\w-]+"
     
-
-
+    
+    
 genius_news_edit:
     pattern: /{languageCode}/aktualnosci/edycja/{newsSlug}
     defaults: {_controller: GeniusDesignBackendBundle:News:edit, languageCode: ''}

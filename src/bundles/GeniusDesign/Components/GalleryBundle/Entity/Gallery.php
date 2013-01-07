@@ -9,7 +9,7 @@ use Gedmo\Translatable\Translatable;
 /**
  * Gallery
  *
- * @ORM\Table(name="genius_galleries")
+ * @ORM\Table(name="genius_2_galleries")
  * @ORM\Entity(repositoryClass="GeniusDesign\Components\GalleryBundle\Repository\GalleryRepository")
  */
 class Gallery implements Translatable {
