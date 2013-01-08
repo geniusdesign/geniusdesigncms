@@ -71,7 +71,6 @@ class SimpleUserType extends AbstractType {
             ));
         }
         $builder->add('note', null, array(
-            'required' => true,
             'label' => 'Notatka',
             'attr' => array(
                 'placeholder' => 'Notatka'

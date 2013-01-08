@@ -142,5 +142,50 @@ abstract class MainController extends Controller implements EventfulControllerIn
 
         return $this;
     }
+    
+    /**
+     * Redirects to the referer or (if empty and not exists) to the homepage
+     * @return Response
+     */
+    public function redirectToReferer($frontend = true) {
+        $url = $this->getRefererUrl();
+
+        if ($url === null) {
+            $routeName = 'genius_homepage';
+                
+            if($frontend){
+                $routeName = 'genius_frontend_main';
+            }
+
+            $url = $this->generateUrl($routeName);
+        }
+
+        return $this->redirect($url);
+    }
+    
+    /**
+     * Returns url of the referer
+     * 
+     * @return string
+     */
+    public function getRefererUrl() {
+        $url = $this->getRequest()
+                ->headers
+                ->get('referer');
+
+        return $url;
+    }
+
+    /**
+     * Return information if user is granted by role
+     * 
+     * @param string $roleCode
+     * @param boolean $returnedIfUserEmpty
+     * @return boolean 
+     */
+    public function isSimpleUserGranted($roleCode, $returnedIfUserEmpty = false){
+        $userHelper = $this->container->get('genius_design_simple_user.helper');
+        return $userHelper->isGranted($roleCode, $returnedIfUserEmpty);
+    }
 
 }

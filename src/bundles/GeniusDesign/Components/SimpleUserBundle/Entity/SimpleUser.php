@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
  * @ORM\Table(name="genius_2_simple_users")
  * @ORM\Entity(repositoryClass="GeniusDesign\Components\SimpleUserBundle\Repository\SimpleUserRepository")
  */
-class SimpleUser implements /*AdvancedUserInterface,*/ \Serializable {
+class SimpleUser implements AdvancedUserInterface, \Serializable {
 
     /**
      * @var integer $id
@@ -300,6 +300,14 @@ class SimpleUser implements /*AdvancedUserInterface,*/ \Serializable {
         return $this->role;
     }
 
+    /*
+     * Implements UserInterface
+     */
+
+    public function getRoles() {
+        return array($this->role);
+    }
+
     /**
      * Implements UserInterface
      * @param UserInterface $admin 
@@ -380,7 +388,20 @@ class SimpleUser implements /*AdvancedUserInterface,*/ \Serializable {
      * @see implements \Serializable
      */
     public function serialize() {
-        return serialize($this->getId());
+        return serialize(
+                        array(
+                            $this->id,
+                            $this->first_name,
+                            $this->last_name,
+                            $this->email,
+                            $this->password,
+                            $this->note,
+                            $this->avatar,
+                            $this->created_at,
+                            $this->updated_at,
+                            $this->deleted_at
+                        )
+        );
     }
 
     /**
@@ -392,7 +413,19 @@ class SimpleUser implements /*AdvancedUserInterface,*/ \Serializable {
      * @see implements \Serializable
      */
     public function unserialize($serialized) {
-        $this->id = (int) unserialize($serialized);
+        list(
+                $this->id,
+                $this->first_name,
+                $this->last_name,
+                $this->email,
+                $this->password,
+                $this->note,
+                $this->avatar,
+                $this->created_at,
+                $this->updated_at,
+                $this->deleted_at
+                ) = unserialize($serialized);
+
         return $this;
     }
 

@@ -11,6 +11,9 @@ class NewsController extends MainController {
      * @return Response 
      */
     public function listAction() {
+        
+        var_dump($this->isSimpleUserGranted('ROLE_ADMIN', true));
+        
         $newsHelper = $this->get('genius_design_news.helper');
         $languageLcid = $this->getLanguageLcid();
 

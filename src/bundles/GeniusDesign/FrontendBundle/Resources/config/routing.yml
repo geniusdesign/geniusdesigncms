@@ -1,3 +1,13 @@
+simple_user_logout:
+    pattern: /uzytkownik/wyloguj-sie
+    defaults: {_controller: GeniusDesignComponentsSimpleUserBundle:SimpleUser:logout}
+    
+simple_user_login:
+    pattern: /uzytkownik/zaloguj-sie
+    defaults: {_controller: GeniusDesignComponentsSimpleUserBundle:SimpleUser:login}
+        
+
+
 genius_frontend_news_single:
     pattern: /{languageCode}/aktualnosc/{newsSlug}
     defaults: {_controller: GeniusDesignFrontendBundle:News:single, languageCode: ''}

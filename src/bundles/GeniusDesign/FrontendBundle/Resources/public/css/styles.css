@@ -162,31 +162,42 @@ a,
 .main .content .flash-error div{
     background-image: url('/bundles/geniusdesigncommon/img/icons/exclamation-red.png');
 }
-
-.main .content .link{
+.body .content .link{
     background-repeat: no-repeat;
     background-position: 0 50%;
     float: right;
     margin: 0 8px;
     padding-left: 23px;
 }
-.main .content .delete{
+.body .content .delete{
     background-image: url('/bundles/geniusdesigncommon/img/icons/cross-circle.png');
 }
-.main .content .edit{
+.body .content .edit{
     background-image: url('/bundles/geniusdesigncommon/img/icons/pencil.png');
 }
-.main .content .toggle{
+.body .content .edit-description{
+    background-image: url('/bundles/geniusdesigncommon/img/icons/balloon--pencil.png');
+}
+.body .content .toggle{
     background-image: url('/bundles/geniusdesigncommon/img/icons/arrow-retweet.png');
 }
-.main .content .add{
+.body .content .add{
     background-image: url('/bundles/geniusdesigncommon/img/icons/plus-button.png');
 }
-.main .content .cancel{
+.body .content .cancel{
     background-image: url('/bundles/geniusdesigncommon/img/icons/arrow-return-180-left.png');
 }
-.main .content .save{
+.body .content .save{
     background-image: url('/bundles/geniusdesigncommon/img/icons/disk-black.png');
+}
+.body .content .inbox-image{
+    background-image: url('/bundles/geniusdesigncommon/img/icons/inbox-image.png');
+}
+.body .content .warning{
+    background-image: url('/bundles/geniusdesigncommon/img/icons/slash.png');
+}
+.body .content .person{
+    background-image: url('/bundles/geniusdesigncommon/img/icons/user-silhouette.png');
 }
 .main .content textarea{
     height: 150px;

@@ -29,15 +29,25 @@
 
     <body>
         <div class="body">
-            <div id="status-bar-container">
+            <div id="status-bar-container" class="content">
                 {% if genius_design_languages_defined() %}
                     {{ genius_design_show_languages() }}
                 {% endif %}
                     
-                <div id="status-bar">Pasek statusowy</div>
+                <div id="status-bar">
+                    {{ genius_design_simple_user_login('genius_simple_user_list', {'languageCode': 'pl'}) }}
+                </div>
             </div>
 
             <div class="header">Nagłówek strony</div>
+            
+            {% if genius_design_user_is_granted('ROLE_ADMIN') %}
+                <div class="header">Box widziany tylko przez zalogowanego administratora</div>
+            {% endif %}
+                
+            {% if genius_design_user_is_granted('ROLE_CLIENT') %}
+                <div class="header">Box widziany tylko przez zalogowanego klienta</div>
+            {% endif %}
             
             <div class="main">
                 <div class="menu">
